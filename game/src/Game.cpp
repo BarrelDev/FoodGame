@@ -43,6 +43,8 @@ void main()
 
 			DrawTexturePro(starTexture, starRect, { starItem.GetPosition().x, starItem.GetPosition().y, starRect.width, starRect.height }, starCenter, 0, WHITE);
 
+			DrawText(starItem.GetName().c_str(), starItem.GetPosition().x + RenderConstants::kTextOffsetX, starItem.GetPosition().y + RenderConstants::kTextOffsetY, 20, BLACK);
+
 		EndDrawing();
 	}
 

@@ -6,4 +6,7 @@ namespace RenderConstants
 	constexpr int kScreenHeight = 450;
 
 	constexpr int kTargetFPS = 30;
+
+	constexpr int kTextOffsetY = 50;
+	constexpr int kTextOffsetX = -20;
 } // namespace RenderConstants

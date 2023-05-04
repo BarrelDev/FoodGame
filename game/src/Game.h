@@ -9,7 +9,7 @@
 Vector2 ballPosition{ RenderConstants::kScreenWidth / 2.0f, RenderConstants::kScreenHeight / 4.0f };
 
 // Create Items with Images
-Item starItem{ "Item", 0, (float)RenderConstants::kScreenWidth / 6.0f, 200, "resources/textures/new star.png" };
+Item starItem{ "Star", 0, (float)RenderConstants::kScreenWidth / 6.0f, 200, "resources/textures/new star.png" };
 Item testItem{ "Item", 0, (float)RenderConstants::kScreenWidth / 2.0f, 3.0f * (float)(RenderConstants::kScreenHeight / 4), "resources/textures/star.png" };
 
 // Create Positioning Vector and Rectangle for starItem
