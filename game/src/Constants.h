@@ -10,3 +10,9 @@ namespace RenderConstants
 	constexpr int kTextOffsetY = 50;
 	constexpr int kTextOffsetX = -20;
 } // namespace RenderConstants
+
+namespace MemoryConstants
+{
+	constexpr int kMaxComponents = 32;
+	constexpr int kMaxEntities = 32;
+} // namespace MemoryConstants

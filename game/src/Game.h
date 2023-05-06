@@ -4,6 +4,10 @@
 
 #include "Constants.h"
 #include "Item.h"
+#include "Scene.h"
+
+// Scene to store all entities and components.
+Scene scene;
 
 // Store ball shape position
 Vector2 ballPosition{ RenderConstants::kScreenWidth / 2.0f, RenderConstants::kScreenHeight / 4.0f };
@@ -21,4 +25,11 @@ Vector2 mousePos;
 
 bool isHolding;
 
+int s_componentCounter = 0;
+
 void main();
+
+// Systems to act on components
+void SetPosition(PositionComponent& pos, float x, float y);
+
+void SetTexture(TextureComponent& txt, const char *filePath);
