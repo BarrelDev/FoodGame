@@ -17,6 +17,10 @@ class Item
 
 		Image GetImage();
 
+		Rectangle GetRect();
+
+		Vector2 GetCenter();
+
 		std::string GetName();
 
 		int GetID();
@@ -24,6 +28,10 @@ class Item
 		Vector2 m_position;
 
 		Image m_image;
+
+		Rectangle m_rect;
+
+		Vector2 m_center;
 
 		std::string m_name;
 

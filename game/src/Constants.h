@@ -10,3 +10,9 @@ namespace RenderConstants
 	constexpr int kTextOffsetY = 50;
 	constexpr int kTextOffsetX = -20;
 } // namespace RenderConstants
+
+namespace BoxConstants
+{
+	constexpr int kBoxWidth = 150;
+	constexpr int kBoxHeight = 100;
+} // namespace BoxConstants

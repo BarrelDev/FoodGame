@@ -11,6 +11,8 @@ void main()
 	Texture2D itemTexture = { LoadTextureFromImage(testItem.GetImage()) };
 	Texture2D starTexture = { LoadTextureFromImage(starItem.GetImage()) };
 
+	
+
 	// Main Game Loop
 	while (!WindowShouldClose()) 
 	{
@@ -24,9 +26,9 @@ void main()
 		if (isHolding) 
 		{
 			mousePos = GetMousePosition();
-			if (mousePos.x <= (float)RenderConstants::kScreenWidth - starCenter.x && mousePos.x >= starCenter.x)
+			if (mousePos.x <= (float)RenderConstants::kScreenWidth - starItem.GetCenter().x && mousePos.x >= starItem.GetCenter().x)
 				starItem.SetX(mousePos.x);
-			if (mousePos.y <= (float)RenderConstants::kScreenHeight - starCenter.y && mousePos.y >= starCenter.y)
+			if (mousePos.y <= (float)RenderConstants::kScreenHeight - starItem.GetCenter().y && mousePos.y >= starItem.GetCenter().y)
 				starItem.SetY(mousePos.y);
 		}
 
@@ -35,15 +37,29 @@ void main()
 
 			ClearBackground(RAYWHITE);
 
+			DrawRectangleRec(leftInput.GetRect(), BLACK);
+
+			DrawRectangleRec(rightInput.GetRect(), BLACK);
+
+			DrawRectangleRec(output, BLUE);
+
+			DrawRectangleRec({ starItem.GetPosition().x - starItem.GetCenter().x, starItem.GetPosition().y - starItem.GetCenter().y, starItem.GetRect().width, starItem.GetRect().height }, BLUE);
+
 			DrawText("I MADE MY FIRST WINDOW IN RAYLIB!!!", 190, 200, 20, BLACK);
 
 			DrawCircleV(ballPosition, 50, MAROON);
 
 			DrawTextureV(itemTexture, testItem.GetPosition(), WHITE);
 
-			DrawTexturePro(starTexture, starRect, { starItem.GetPosition().x, starItem.GetPosition().y, starRect.width, starRect.height }, starCenter, 0, WHITE);
+			DrawTexturePro(starTexture, starItem.GetRect(), { starItem.GetPosition().x, starItem.GetPosition().y, starItem.GetRect().width, starItem.GetRect().height }, starItem.GetCenter(), 0, WHITE);
 
-			DrawText(starItem.GetName().c_str(), starItem.GetPosition().x + RenderConstants::kTextOffsetX, starItem.GetPosition().y + RenderConstants::kTextOffsetY, 20, BLACK);
+			DrawText(starItem.GetName().c_str(), (int)starItem.GetPosition().x + RenderConstants::kTextOffsetX, (int)starItem.GetPosition().y + RenderConstants::kTextOffsetY, 20, BLACK);
+			
+			if(leftInput.IsItemTouching(&starItem) || rightInput.IsItemTouching(&starItem))
+                          DrawText("yes", 200, 300, 20, BLACK);
+                        else
+                          DrawText("no", 200, 300, 20, BLACK);
+
 
 		EndDrawing();
 	}
