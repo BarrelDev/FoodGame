@@ -44,12 +44,13 @@ void main()
 				  {
                     Item *item = items[i];
 
-                    itemPos = item->GetPosition();
-                    itemEdge = Vector2{item->GetPosition().x + item->GetWidth(),
-                             item->GetPosition().y + item->GetHeight()};
-                    std::cout << "Mouse(" << mousePos.x << " ,"
+                    itemPos = Vector2{item->GetPosition().x - item->GetWidth() / 2.0f,
+                               item->GetPosition().y - item->GetHeight() / 2.0f};
+                    itemEdge = Vector2{item->GetPosition().x + item->GetWidth() / 2.0f,
+                        item->GetPosition().y + item->GetHeight() / 2.0f};
+                    /*std::cout << "Mouse(" << mousePos.x << " ,"
                               << mousePos.y << ")" << std::endl;
-                    std::cout << item->GetName() + "(" << itemPos.x << " ," << itemPos.y << ")" << std::endl;
+                    std::cout << item->GetName() + "(" << itemPos.x << " ," << itemPos.y << ")" << std::endl;*/
                     if (mousePos.x >= itemPos.x && mousePos.x <= itemEdge.x &&
                         mousePos.y >= itemPos.y && mousePos.y <= itemEdge.y) 
 					{
@@ -116,8 +117,13 @@ void main()
 	}
 
 	// Unload Textures
-	UnloadTexture(itemTexture);
-	UnloadTexture(starTexture);
+    for (int i = 0; i < textures.size(); i++) 
+	{
+          UnloadTexture(textures[i]);
+	}
+
+	//UnloadTexture(itemTexture);
+	//UnloadTexture(starTexture);
 
 	CloseWindow();
 
