@@ -1,7 +1,10 @@
 #include "Game.h"
 
+#include <iostream>
+
 void main()
 {
+  std::cout << "starting" << std::endl;
 	// Start Rendering Window
 	InitWindow(RenderConstants::kScreenWidth, RenderConstants::kScreenHeight, "raylib test");
 
@@ -11,25 +14,65 @@ void main()
 	Texture2D itemTexture = { LoadTextureFromImage(testItem.GetImage()) };
 	Texture2D starTexture = { LoadTextureFromImage(starItem.GetImage()) };
 
+	items.push_back(&starItem);
+    items.push_back(&testItem);
+
+	textures.reserve(items.size());
+	textures.push_back(starTexture);
+
+
+	textures.insert(textures.begin() + testItem.GetID(), itemTexture);
+    textures.insert(textures.begin() + starItem.GetID(), starTexture);
+
 	
 
 	// Main Game Loop
 	while (!WindowShouldClose()) 
 	{
+      mousePos = GetMousePosition();
 		// Check if mouse button held
 		if (IsMouseButtonDown(0))
-			isHolding = true;
+			isLeftClicking = true;
 		else if (IsMouseButtonReleased(0))
-			isHolding = false;
+			isLeftClicking = false;
 
-		// Move starItem to mouse position if left mouse button held
+		if (isLeftClicking) 
+		{
+                  Vector2 itemPos;
+                  Vector2 itemEdge;
+                  for (int i = 0; i < items.size(); ++i) 
+				  {
+                    Item *item = items[i];
+
+                    itemPos = item->GetPosition();
+                    itemEdge = Vector2{item->GetPosition().x + item->GetWidth(),
+                             item->GetPosition().y + item->GetHeight()};
+                    std::cout << "Mouse(" << mousePos.x << " ,"
+                              << mousePos.y << ")" << std::endl;
+                    std::cout << item->GetName() + "(" << itemPos.x << " ," << itemPos.y << ")" << std::endl;
+                    if (mousePos.x >= itemPos.x && mousePos.x <= itemEdge.x &&
+                        mousePos.y >= itemPos.y && mousePos.y <= itemEdge.y) 
+					{
+                      isHolding = true;
+                      heldItem = item;
+                    }
+				  }
+                } else {
+                  isHolding = false;
+		}
+
+		// Move heldItem to mouse position if left mouse button held
 		if (isHolding) 
 		{
-			mousePos = GetMousePosition();
-			if (mousePos.x <= (float)RenderConstants::kScreenWidth - starItem.GetCenter().x && mousePos.x >= starItem.GetCenter().x)
-				starItem.SetX(mousePos.x);
-			if (mousePos.y <= (float)RenderConstants::kScreenHeight - starItem.GetCenter().y && mousePos.y >= starItem.GetCenter().y)
-				starItem.SetY(mousePos.y);
+			if (mousePos.x <= (float)RenderConstants::kScreenWidth - heldItem->GetCenter().x && mousePos.x >= heldItem->GetCenter().x)
+				heldItem->SetX(mousePos.x);
+			if (mousePos.y <= (float)RenderConstants::kScreenHeight - heldItem->GetCenter().y && mousePos.y >= heldItem->GetCenter().y)
+                heldItem->SetY(mousePos.y);
+        } else if(heldItem != nullptr) {
+                  if (leftInput.IsItemTouching(heldItem))
+                    leftInput.SnapItemInBox(heldItem);
+                  if (rightInput.IsItemTouching(heldItem))
+                    rightInput.SnapItemInBox(heldItem);
 		}
 
 		// Render Frame
@@ -49,18 +92,26 @@ void main()
 
 			DrawCircleV(ballPosition, 50, MAROON);
 
-			DrawTextureV(itemTexture, testItem.GetPosition(), WHITE);
+			for (auto &item : items) 
+			{
+                          DrawTexturePro(textures[item->GetID() + 1], item->GetRect(),
+                                         {item->GetPosition().x,
+                                          item->GetPosition().y,
+                                          item->GetRect().width, item->GetRect().height},
+                              item->GetCenter(), 0, WHITE);
 
-			DrawTexturePro(starTexture, starItem.GetRect(), { starItem.GetPosition().x, starItem.GetPosition().y, starItem.GetRect().width, starItem.GetRect().height }, starItem.GetCenter(), 0, WHITE);
-
-			DrawText(starItem.GetName().c_str(), (int)starItem.GetPosition().x + RenderConstants::kTextOffsetX, (int)starItem.GetPosition().y + RenderConstants::kTextOffsetY, 20, BLACK);
+                          DrawText(item->GetName().c_str(),
+                                   (int)item->GetPosition().x +
+                                       RenderConstants::kTextOffsetX,
+                                   (int)item->GetPosition().y +
+                                       RenderConstants::kTextOffsetY,
+                                   20, BLACK);
+            }
 			
-			if(leftInput.IsItemTouching(&starItem) || rightInput.IsItemTouching(&starItem))
+			if(leftInput.IsItemTouching(heldItem) || rightInput.IsItemTouching(heldItem))
                           DrawText("yes", 200, 300, 20, BLACK);
                         else
                           DrawText("no", 200, 300, 20, BLACK);
-
-
 		EndDrawing();
 	}
 

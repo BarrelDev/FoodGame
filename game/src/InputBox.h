@@ -1,6 +1,7 @@
 #pragma once
 
 #include "raylib.h"
+#include <memory>
 #include "Item.h"
 
 namespace BoxConstants {
@@ -17,6 +18,8 @@ public:
 	void SnapItemInBox(Item *item);
 
 	void RemoveItem();
+
+	Item* GetHeldItem();
 
 	Rectangle GetRect();
 

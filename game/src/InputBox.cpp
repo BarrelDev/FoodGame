@@ -24,12 +24,15 @@ bool InputBox::IsItemTouching(Item *item)
 
 void InputBox::SnapItemInBox(Item* item) { 
   if (item != nullptr) {
-    item->SetX(m_position.x);
-    item->SetY(m_position.y);
+    item->SetX(m_position.x + BoxConstants::kWidth / 2.0f);
+    item->SetY(m_position.y + BoxConstants::kHeight / 2.0f);
+    m_heldItem = item;
   }
 }
 
 void InputBox::RemoveItem() { m_heldItem = nullptr; }
+
+Item* InputBox::GetHeldItem()  { return m_heldItem; }
 
 Rectangle InputBox::GetRect() { return m_box; }
 

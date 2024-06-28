@@ -20,6 +20,10 @@ Rectangle Item::GetRect() { return m_rect; }
 
 Vector2 Item::GetCenter() { return m_center; }
 
+float Item::GetWidth() { return m_image.width; }
+
+float Item::GetHeight() { return m_image.height; }
+
 std::string Item::GetName() { return m_name;  }
 
 int Item::GetID() { return m_id; }

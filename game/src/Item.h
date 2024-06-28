@@ -21,6 +21,10 @@ class Item
 
 		Vector2 GetCenter();
 
+		float GetWidth();
+
+		float GetHeight();
+
 		std::string GetName();
 
 		int GetID();
