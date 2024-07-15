@@ -1,12 +1,12 @@
 #include "Item.h"
 
-Item::Item(std::string name, int id, float x, float y,
+Item::Item(std::string name, float x, float y,
            const char *textureFilePath)
     : m_position{x, y}, m_image{LoadImage(textureFilePath)},
       m_rect{0.f, 0.f, (float)m_image.width, (float)m_image.height},
       m_center{(float)m_image.width / 2.f,
                (float)m_image.height / 2.f},
-      m_name{name}, m_id{id} {}
+      m_name{name}, m_id{id++} {}
 
 Vector2 Item::GetPosition() { return m_position; }
 

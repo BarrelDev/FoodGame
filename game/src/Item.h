@@ -4,10 +4,12 @@
 
 #include <string>
 
+static int id = 0;
+
 class Item
 {
 	public:
-		Item(std::string name, int id, float x, float y, const char *textureFilePath);
+		Item(std::string name, float x, float y, const char *textureFilePath);
 
 		Vector2 GetPosition();
 

@@ -48,9 +48,6 @@ void main()
                                item->GetPosition().y - item->GetHeight() / 2.0f};
                     itemEdge = Vector2{item->GetPosition().x + item->GetWidth() / 2.0f,
                         item->GetPosition().y + item->GetHeight() / 2.0f};
-                    /*std::cout << "Mouse(" << mousePos.x << " ,"
-                              << mousePos.y << ")" << std::endl;
-                    std::cout << item->GetName() + "(" << itemPos.x << " ," << itemPos.y << ")" << std::endl;*/
                     if (mousePos.x >= itemPos.x && mousePos.x <= itemEdge.x &&
                         mousePos.y >= itemPos.y && mousePos.y <= itemEdge.y) 
 					{
@@ -90,8 +87,6 @@ void main()
 			DrawRectangleRec({ starItem.GetPosition().x - starItem.GetCenter().x, starItem.GetPosition().y - starItem.GetCenter().y, starItem.GetRect().width, starItem.GetRect().height }, BLUE);
 
 			DrawText("I MADE MY FIRST WINDOW IN RAYLIB!!!", 190, 200, 20, BLACK);
-
-			DrawCircleV(ballPosition, 50, MAROON);
 
 			for (auto &item : items) 
 			{

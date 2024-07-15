@@ -11,8 +11,8 @@
 Vector2 ballPosition{ RenderConstants::kScreenWidth / 2.0f, RenderConstants::kScreenHeight / 4.0f };
 
 // Create Items with Images
-Item starItem{ "Star", 0, (float)RenderConstants::kScreenWidth / 6.0f, 200, "resources/textures/new star.png" };
-Item testItem{ "Item", 1, (float)RenderConstants::kScreenWidth / 2.0f, 3.0f * (float)(RenderConstants::kScreenHeight / 4), "resources/textures/star.png" };
+Item starItem{ "Star", (float)RenderConstants::kScreenWidth / 6.0f, 200, "resources/textures/new star.png" };
+Item testItem{ "Item", (float)RenderConstants::kScreenWidth / 2.0f, 3.0f * (float)(RenderConstants::kScreenHeight / 4), "resources/textures/star.png" };
 
 std::vector<Item*> items;
 std::vector<Texture2D> textures;
