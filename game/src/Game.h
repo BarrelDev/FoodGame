@@ -13,9 +13,6 @@
 Vector2 ballPosition{ RenderConstants::kScreenWidth / 2.0f, RenderConstants::kScreenHeight / 4.0f };
 
 // Create Items with Images
-//Item starItem{ "Star", ItemType::STAR, (float)RenderConstants::kScreenWidth / 6.0f, 200, "resources/textures/new star.png" };
-//Item testItem{ "Item", ItemType::ITEM,(float)RenderConstants::kScreenWidth / 2.0f, 3.0f * (float)(RenderConstants::kScreenHeight / 4), "resources/textures/star.png" };
-
 std::shared_ptr<Item> starItem = ItemFactory::CreateItemFromTypePos(
     ItemType::STAR, (float)RenderConstants::kScreenWidth / 6.0f, 200.0f);
 
@@ -27,24 +24,11 @@ std::vector<std::shared_ptr<Item>> items;
 std::vector<Texture2D> textures;
 
 // Collision for items.
-Rectangle inputOne{ 
-	(float) RenderConstants::kScreenWidth / 12.0f,
-	(float) RenderConstants::kScreenHeight / 8.0f,
-	BoxConstants::kBoxWidth, BoxConstants::kBoxHeight
-};
-Rectangle inputTwo{ 
-	(float)RenderConstants::kScreenWidth / 2.5f, 
-	(float)RenderConstants::kScreenHeight / 8.0f, 
-	BoxConstants::kBoxWidth, BoxConstants::kBoxHeight 
-};
-
 InputBox leftInput{(float)RenderConstants::kScreenWidth / 12.0f,
                    (float)RenderConstants::kScreenHeight / 8.0f};
 
 InputBox rightInput{(float)RenderConstants::kScreenWidth / 2.5f,
                     (float)RenderConstants::kScreenHeight / 8.0f};
-
-
 
 Rectangle output{ 
 	(float)RenderConstants::kScreenWidth / 1.4f, 

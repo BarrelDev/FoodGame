@@ -23,7 +23,6 @@ int main()
 
 	textures.insert(textures.begin() + testItem->GetID(), itemTexture);
     textures.insert(textures.begin() + starItem->GetID(), starTexture);
-
 	
 
 	// Main Game Loop

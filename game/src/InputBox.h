@@ -19,7 +19,7 @@ public:
 
 	void RemoveItem();
 
-	std::shared_ptr<Item>  GetHeldItem();
+	std::shared_ptr<Item> GetHeldItem();
 
 	Rectangle GetRect();
 

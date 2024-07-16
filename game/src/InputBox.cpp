@@ -32,7 +32,7 @@ void InputBox::SnapItemInBox(std::shared_ptr<Item>  item) {
 
 void InputBox::RemoveItem() { m_heldItem = nullptr; }
 
-std::shared_ptr<Item>  InputBox::GetHeldItem()  { return m_heldItem; }
+std::shared_ptr<Item> InputBox::GetHeldItem()  { return m_heldItem; }
 
 Rectangle InputBox::GetRect() { return m_box; }
 
