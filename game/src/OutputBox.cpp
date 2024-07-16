@@ -1,4 +1,5 @@
 #include "OutputBox.h"
+#include "ItemFactory.h"
 
 OutputBox::OutputBox(float x, float y, std::shared_ptr<InputBox> left,
                      std::shared_ptr<InputBox> right)
@@ -15,7 +16,18 @@ std::shared_ptr<Item> OutputBox::GetOutputItem() {
   auto leftItem = m_leftInput->GetHeldItem();
   auto rightItem = m_rightInput->GetHeldItem();
 
-  return rightItem;
+  // Temporary logic to test outputting items.
+
+  if (leftItem != nullptr && rightItem != nullptr) {
+    auto output = ItemFactory::CreateItemFromTypePos(
+        ItemType::OUTPUT, m_position.x + OutputBoxConstants::kWidth / 2.0f,
+        m_position.y + OutputBoxConstants::kHeight / 2.0f);
+
+    m_heldItem = output;
+
+    return output;
+  }
+  return nullptr;
 }
 
 Rectangle OutputBox::GetRect() { return m_box; }

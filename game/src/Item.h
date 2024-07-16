@@ -9,7 +9,8 @@ static int id = 0;
 enum ItemType {
 	NONE,
 	STAR,
-	ITEM
+	ITEM,
+	OUTPUT
 };
 
 class Item

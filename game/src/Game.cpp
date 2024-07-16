@@ -81,7 +81,7 @@ int main()
 
 			DrawRectangleRec(rightInput.GetRect(), BLACK);
 
-			DrawRectangleRec(output, BLUE);
+			DrawRectangleRec(outputBox.GetRect(), BLUE);
 
 			DrawText("I MADE MY FIRST WINDOW IN RAYLIB!!!", 190, 200, 20, BLACK);
 
