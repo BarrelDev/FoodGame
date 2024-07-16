@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-void main()
+int main()
 {
   std::cout << "starting" << std::endl;
 	// Start Rendering Window
@@ -11,17 +11,17 @@ void main()
 	SetTargetFPS(RenderConstants::kTargetFPS);
 
 	// Load Textures from Item Images
-	Texture2D itemTexture = { LoadTextureFromImage(testItem.GetImage()) };
+	Texture2D itemTexture = { LoadTextureFromImage(testItem->GetImage()) };
 	Texture2D starTexture = { LoadTextureFromImage(starItem->GetImage()) };
 
 	items.push_back(starItem);
-    items.push_back(std::make_shared<Item>(testItem));
+    items.push_back(testItem);
 
 	textures.reserve(items.size());
 	textures.push_back(starTexture);
 
 
-	textures.insert(textures.begin() + testItem.GetID(), itemTexture);
+	textures.insert(textures.begin() + testItem->GetID(), itemTexture);
     textures.insert(textures.begin() + starItem->GetID(), starTexture);
 
 	
@@ -120,5 +120,5 @@ void main()
 
 	CloseWindow();
 
-	return;
+	return 0;
 }

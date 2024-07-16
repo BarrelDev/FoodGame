@@ -14,10 +14,13 @@ Vector2 ballPosition{ RenderConstants::kScreenWidth / 2.0f, RenderConstants::kSc
 
 // Create Items with Images
 //Item starItem{ "Star", ItemType::STAR, (float)RenderConstants::kScreenWidth / 6.0f, 200, "resources/textures/new star.png" };
-Item testItem{ "Item", ItemType::ITEM,(float)RenderConstants::kScreenWidth / 2.0f, 3.0f * (float)(RenderConstants::kScreenHeight / 4), "resources/textures/star.png" };
+//Item testItem{ "Item", ItemType::ITEM,(float)RenderConstants::kScreenWidth / 2.0f, 3.0f * (float)(RenderConstants::kScreenHeight / 4), "resources/textures/star.png" };
 
 std::shared_ptr<Item> starItem = ItemFactory::CreateItemFromTypePos(
-    ItemType::STAR, (float)RenderConstants::kScreenWidth / 2.0f,
+    ItemType::STAR, (float)RenderConstants::kScreenWidth / 6.0f, 200.0f);
+
+std::shared_ptr<Item> testItem = ItemFactory::CreateItemFromTypePos(
+    ItemType::ITEM, (float)RenderConstants::kScreenWidth / 2.0f,
     3.0f * (float)(RenderConstants::kScreenHeight / 4));
 
 std::vector<std::shared_ptr<Item>> items;
@@ -63,4 +66,4 @@ std::shared_ptr<Item> heldItem;
 bool isLeftClicking;
 bool isRightClicking;
 
-void main();
+int main();
