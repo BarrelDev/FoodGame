@@ -13,13 +13,13 @@ class InputBox {
 public:
 	InputBox(float x, float y);
 
-	bool IsItemTouching(Item *item);
+	bool IsItemTouching(std::shared_ptr<Item> item);
 
-	void SnapItemInBox(Item *item);
+	void SnapItemInBox(std::shared_ptr<Item> item);
 
 	void RemoveItem();
 
-	Item* GetHeldItem();
+	std::shared_ptr<Item>  GetHeldItem();
 
 	Rectangle GetRect();
 
@@ -28,7 +28,7 @@ public:
 private:
     Rectangle m_box;
 
-    Item *m_heldItem;
+    std::shared_ptr<Item> m_heldItem;
 
     Vector2 m_position;
 };

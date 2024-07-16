@@ -5,7 +5,7 @@ InputBox::InputBox(float x, float y)
                               BoxConstants::kHeight},
       m_heldItem{nullptr} {}
 
-bool InputBox::IsItemTouching(Item *item) 
+bool InputBox::IsItemTouching(std::shared_ptr<Item> item) 
 {
   if (item == nullptr)
     return false;
@@ -22,7 +22,7 @@ bool InputBox::IsItemTouching(Item *item)
   return false;
 }
 
-void InputBox::SnapItemInBox(Item* item) { 
+void InputBox::SnapItemInBox(std::shared_ptr<Item>  item) { 
   if (item != nullptr) {
     item->SetX(m_position.x + BoxConstants::kWidth / 2.0f);
     item->SetY(m_position.y + BoxConstants::kHeight / 2.0f);
@@ -32,7 +32,7 @@ void InputBox::SnapItemInBox(Item* item) {
 
 void InputBox::RemoveItem() { m_heldItem = nullptr; }
 
-Item* InputBox::GetHeldItem()  { return m_heldItem; }
+std::shared_ptr<Item>  InputBox::GetHeldItem()  { return m_heldItem; }
 
 Rectangle InputBox::GetRect() { return m_box; }
 

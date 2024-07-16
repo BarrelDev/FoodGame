@@ -6,30 +6,40 @@
 
 static int id = 0;
 
+enum ItemType {
+	NONE,
+	STAR,
+	ITEM
+};
+
 class Item
 {
 	public:
-		Item(std::string name, float x, float y, const char *textureFilePath);
+		Item();
 
-		Vector2 GetPosition();
+		Item(std::string name, ItemType type, float x, float y, const char *textureFilePath);
+
+		Vector2 GetPosition() const;
 
 		void SetX(float x);
 
 		void SetY(float y);
 
-		Image GetImage();
+		Image GetImage() const;
 
-		Rectangle GetRect();
+		Rectangle GetRect() const;
 
-		Vector2 GetCenter();
+		Vector2 GetCenter() const;
 
-		float GetWidth();
+		int GetWidth() const;
 
-		float GetHeight();
+		int GetHeight() const;
 
-		std::string GetName();
+		ItemType GetType() const;
 
-		int GetID();
+		std::string GetName() const;
+
+		int GetID() const;
 	private:
 		Vector2 m_position;
 
@@ -38,6 +48,8 @@ class Item
 		Rectangle m_rect;
 
 		Vector2 m_center;
+
+		ItemType m_type{ ItemType::NONE };
 
 		std::string m_name;
 

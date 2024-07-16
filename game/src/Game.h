@@ -2,19 +2,25 @@
 
 #include "raylib.h"
 #include <vector>
+#include <memory>
 
 #include "Constants.h"
 #include "Item.h"
 #include "InputBox.h"
+#include "ItemFactory.h"
 
 // Store ball shape position
 Vector2 ballPosition{ RenderConstants::kScreenWidth / 2.0f, RenderConstants::kScreenHeight / 4.0f };
 
 // Create Items with Images
-Item starItem{ "Star", (float)RenderConstants::kScreenWidth / 6.0f, 200, "resources/textures/new star.png" };
-Item testItem{ "Item", (float)RenderConstants::kScreenWidth / 2.0f, 3.0f * (float)(RenderConstants::kScreenHeight / 4), "resources/textures/star.png" };
+//Item starItem{ "Star", ItemType::STAR, (float)RenderConstants::kScreenWidth / 6.0f, 200, "resources/textures/new star.png" };
+Item testItem{ "Item", ItemType::ITEM,(float)RenderConstants::kScreenWidth / 2.0f, 3.0f * (float)(RenderConstants::kScreenHeight / 4), "resources/textures/star.png" };
 
-std::vector<Item*> items;
+std::shared_ptr<Item> starItem = ItemFactory::CreateItemFromTypePos(
+    ItemType::STAR, (float)RenderConstants::kScreenWidth / 2.0f,
+    3.0f * (float)(RenderConstants::kScreenHeight / 4));
+
+std::vector<std::shared_ptr<Item>> items;
 std::vector<Texture2D> textures;
 
 // Collision for items.
@@ -52,7 +58,7 @@ Vector2 mousePos;
 
 bool isHolding;
 
-Item *heldItem;
+std::shared_ptr<Item> heldItem;
 
 bool isLeftClicking;
 bool isRightClicking;

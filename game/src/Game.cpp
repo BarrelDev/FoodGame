@@ -12,17 +12,17 @@ void main()
 
 	// Load Textures from Item Images
 	Texture2D itemTexture = { LoadTextureFromImage(testItem.GetImage()) };
-	Texture2D starTexture = { LoadTextureFromImage(starItem.GetImage()) };
+	Texture2D starTexture = { LoadTextureFromImage(starItem->GetImage()) };
 
-	items.push_back(&starItem);
-    items.push_back(&testItem);
+	items.push_back(starItem);
+    items.push_back(std::make_shared<Item>(testItem));
 
 	textures.reserve(items.size());
 	textures.push_back(starTexture);
 
 
 	textures.insert(textures.begin() + testItem.GetID(), itemTexture);
-    textures.insert(textures.begin() + starItem.GetID(), starTexture);
+    textures.insert(textures.begin() + starItem->GetID(), starTexture);
 
 	
 
@@ -42,7 +42,7 @@ void main()
                   Vector2 itemEdge;
                   for (int i = 0; i < items.size(); ++i) 
 				  {
-                    Item *item = items[i];
+                    std::shared_ptr<Item> item = items[i];
 
                     itemPos = Vector2{item->GetPosition().x - item->GetWidth() / 2.0f,
                                item->GetPosition().y - item->GetHeight() / 2.0f};
@@ -83,8 +83,6 @@ void main()
 			DrawRectangleRec(rightInput.GetRect(), BLACK);
 
 			DrawRectangleRec(output, BLUE);
-
-			DrawRectangleRec({ starItem.GetPosition().x - starItem.GetCenter().x, starItem.GetPosition().y - starItem.GetCenter().y, starItem.GetRect().width, starItem.GetRect().height }, BLUE);
 
 			DrawText("I MADE MY FIRST WINDOW IN RAYLIB!!!", 190, 200, 20, BLACK);
 
