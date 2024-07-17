@@ -1,18 +1,20 @@
 #pragma once
 
-#include "raylib.h"
-#include <vector>
 #include <memory>
 #include <optional>
+#include <vector>
 
 #include "Constants.h"
-#include "Item.h"
 #include "InputBox.h"
-#include "OutputBox.h"
+#include "Item.h"
 #include "ItemFactory.h"
+#include "OptionBox.h"
+#include "OutputBox.h"
+#include "raylib.h"
 
 // Store ball shape position
-Vector2 ballPosition{ RenderConstants::kScreenWidth / 2.0f, RenderConstants::kScreenHeight / 4.0f };
+Vector2 ballPosition{RenderConstants::kScreenWidth / 2.0f,
+                     RenderConstants::kScreenHeight / 4.0f};
 
 // Create Items with Images
 std::shared_ptr<Item> starItem = ItemFactory::CreateItemFromTypePos(
@@ -36,9 +38,11 @@ std::shared_ptr<InputBox> rightInput{
                                (float)RenderConstants::kScreenHeight / 8.0f)};
 
 OutputBox outputBox{(float)RenderConstants::kScreenWidth / 1.4f,
-                    (float)RenderConstants::kScreenHeight / 8.0f, 
-                    leftInput, 
+                    (float)RenderConstants::kScreenHeight / 8.0f, leftInput,
                     rightInput};
+
+OptionBox optionBox{(float)RenderConstants::kScreenWidth / 12.0f,
+                    (float)RenderConstants::kScreenHeight / 1.5f};
 
 // Temporary Rects for storing item spawn boxes.
 Rectangle optionOne;

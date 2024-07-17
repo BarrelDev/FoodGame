@@ -1,58 +1,54 @@
 #pragma once
 
-#include "raylib.h"
-
 #include <string>
+
+#include "raylib.h"
 
 static int id = 0;
 
-enum ItemType {
-	NONE,
-	STAR,
-	ITEM,
-	OUTPUT
-};
+enum ItemType { STAR, ITEM, OUTPUT, NONE };
 
-class Item
-{
-	public:
-		Item();
+class Item {
+ public:
+  Item();
 
-		Item(std::string name, ItemType type, float x, float y, const char *textureFilePath);
+  Item(std::string name, ItemType type, float x, float y,
+       const char *textureFilePath);
 
-		Vector2 GetPosition() const;
+  Vector2 GetPosition() const;
 
-		void SetX(float x);
+  void SetX(float x);
 
-		void SetY(float y);
+  void SetY(float y);
 
-		Image GetImage() const;
+  Image GetImage() const;
 
-		Rectangle GetRect() const;
+  Rectangle GetRect() const;
 
-		Vector2 GetCenter() const;
+  Vector2 GetCenter() const;
 
-		int GetWidth() const;
+  int GetWidth() const;
 
-		int GetHeight() const;
+  int GetHeight() const;
 
-		ItemType GetType() const;
+  ItemType GetType() const;
 
-		std::string GetName() const;
+  std::string GetName() const;
 
-		int GetID() const;
-	private:
-		Vector2 m_position;
+  int GetID() const;
 
-		Image m_image;
+ private:
+  Vector2 m_position;
 
-		Rectangle m_rect;
+  Image m_image;
 
-		Vector2 m_center;
+  Rectangle m_rect;
 
-		ItemType m_type{ ItemType::NONE };
+  Vector2 m_center;
 
-		std::string m_name;
+  ItemType m_type{ItemType::NONE};
 
-		int m_id;
+  std::string m_name;
+
+  int m_id;
 };

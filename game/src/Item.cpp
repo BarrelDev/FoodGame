@@ -1,17 +1,22 @@
 #include "Item.h"
 
 Item::Item()
-    : m_position{0.f, 0.f}, m_image{ImageText("NONE", 16, BLACK)},
-      m_rect{0.f, 0.f, 0.f, 0.f}, m_center{0.f, 0.f}, m_name{"NONE"},
+    : m_position{0.f, 0.f},
+      m_image{ImageText("NONE", 16, BLACK)},
+      m_rect{0.f, 0.f, 0.f, 0.f},
+      m_center{0.f, 0.f},
+      m_name{"NONE"},
       m_id{id++} {}
 
 Item::Item(std::string name, ItemType type, float x, float y,
            const char *textureFilePath)
-    : m_position{x, y}, m_image{LoadImage(textureFilePath)},
+    : m_position{x, y},
+      m_image{LoadImage(textureFilePath)},
       m_rect{0.f, 0.f, (float)m_image.width, (float)m_image.height},
-      m_center{(float)m_image.width / 2.f,
-               (float)m_image.height / 2.f},
-      m_name{name}, m_type{type}, m_id{id++} {}
+      m_center{(float)m_image.width / 2.f, (float)m_image.height / 2.f},
+      m_name{name},
+      m_type{type},
+      m_id{id++} {}
 
 Vector2 Item::GetPosition() const { return m_position; }
 

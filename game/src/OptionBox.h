@@ -3,22 +3,22 @@
 #include <memory>
 
 #include "Item.h"
+#include "ItemFactory.h"
 #include "raylib.h"
 
-namespace BoxConstants {
+namespace OptionBoxConstants {
 constexpr int kWidth = 150;
 constexpr int kHeight = 100;
-}  // namespace BoxConstants
+}  // namespace OptionBoxConstants
 
-class InputBox {
+class OptionBox {
  public:
-  InputBox(float x, float y);
+  OptionBox(float x, float y);
 
   bool IsItemTouching(std::shared_ptr<Item> item);
 
-  void SnapItemInBox(
-      std::shared_ptr<Item> item);  // Snap the given item into the input box
-                                    // and set it as the held item.
+  void SpawnItemInBox();  // Spawn a random item into the option box and
+                          // set it as the held item.
 
   void RemoveItem();
 
@@ -38,4 +38,6 @@ class InputBox {
   Vector2 m_position;
 
   friend class OutputBox;
+
+  friend class InputBox;
 };

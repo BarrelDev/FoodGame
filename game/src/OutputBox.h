@@ -1,22 +1,22 @@
 #pragma once
 
-#include "raylib.h"
-#include <memory>
 #include <map>
+#include <memory>
 #include <utility>
 
-#include "Item.h"
 #include "InputBox.h"
+#include "Item.h"
+#include "raylib.h"
 
 namespace OutputBoxConstants {
-	constexpr int kWidth = 150;
-	constexpr int kHeight = 100;
-} // namespace OutputBoxConstants
+constexpr int kWidth = 150;
+constexpr int kHeight = 100;
+}  // namespace OutputBoxConstants
 
-class OutputBox 
-{
-public:
-  OutputBox(float x, float y, std::shared_ptr<InputBox> left, std::shared_ptr<InputBox> right);
+class OutputBox {
+ public:
+  OutputBox(float x, float y, std::shared_ptr<InputBox> left,
+            std::shared_ptr<InputBox> right);
 
   void RemoveItem();
 
@@ -28,7 +28,7 @@ public:
 
   std::shared_ptr<Item> GetOutputItem();
 
-private:
+ private:
   Rectangle m_box;
 
   std::shared_ptr<Item> m_heldItem;
@@ -38,8 +38,8 @@ private:
 
   Vector2 m_position;
 
-  const static inline std::map<std::pair<ItemType, ItemType>, ItemType> recipies{
-	  {{ItemType::STAR, ItemType::ITEM}, ItemType::OUTPUT},
-      {{ItemType::ITEM, ItemType::STAR}, ItemType::OUTPUT}
-  };
+  const static inline std::map<std::pair<ItemType, ItemType>, ItemType>
+      recipies{{{ItemType::STAR, ItemType::ITEM}, ItemType::OUTPUT},
+               {{ItemType::ITEM, ItemType::STAR}, ItemType::OUTPUT},
+               {{ItemType::NONE, ItemType::NONE}, ItemType::NONE}};
 };
