@@ -26,4 +26,4 @@ namespace ItemFactory {
 	std::shared_ptr<Item> CreateItemFromType(ItemType type);
 
 	std::shared_ptr<Item> CreateItemFromTypePos(ItemType type, float x, float y);
-};
+}; // namespace ItemFactory

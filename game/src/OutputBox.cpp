@@ -16,8 +16,6 @@ std::shared_ptr<Item> OutputBox::GetOutputItem() {
   std::shared_ptr<Item> leftItem = m_leftInput->GetHeldItem();
   std::shared_ptr<Item> rightItem = m_rightInput->GetHeldItem();
 
-  // Temporary logic to test outputting items.
-  // TODO: Setup a lookup table of all recipies
   if (leftItem != nullptr &&
       rightItem != nullptr) {
     auto input = std::pair<ItemType, ItemType>{leftItem->GetType(), rightItem->GetType()};

@@ -11,7 +11,7 @@
 namespace OutputBoxConstants {
 	constexpr int kWidth = 150;
 	constexpr int kHeight = 100;
-} // namespace BoxConstants
+} // namespace OutputBoxConstants
 
 class OutputBox 
 {

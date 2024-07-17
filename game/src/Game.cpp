@@ -35,6 +35,8 @@ int main()
 		else if (IsMouseButtonReleased(0))
 			isLeftClicking = false;
 
+
+		// Check if item is in range of being held by mouse cursor.
 		if (isLeftClicking) 
 		{
                   Vector2 itemPos;
@@ -106,6 +108,8 @@ int main()
 
 			DrawText("FOOD GAME", 190, 200, 20, BLACK);
 
+			// Render loaded items.
+
 			for (auto &item : items) 
 			{
                           DrawTexturePro(textures[item->GetID() + 1], item->GetRect(),
@@ -134,15 +138,12 @@ int main()
 
               DrawText(
                   outputItem->GetName().c_str(),
-                  (int)outputItem->GetPosition().x + RenderConstants::kTextOffsetX,
+                  (int)outputItem->GetPosition().x + RenderConstants::kTextOffsetX - 10,
                   (int)outputItem->GetPosition().y + RenderConstants::kTextOffsetY,
                   20, BLACK);
 			}
 
-			if(leftInput->IsItemTouching(heldItem) || rightInput->IsItemTouching(heldItem))
-                          DrawText("yes", 200, 300, 20, BLACK);
-                        else
-                          DrawText("no", 200, 300, 20, BLACK);
+
 		EndDrawing();
 	}
 
@@ -151,9 +152,6 @@ int main()
 	{
           UnloadTexture(textures[i]);
 	}
-
-	//UnloadTexture(itemTexture);
-	//UnloadTexture(starTexture);
 
 	CloseWindow();
 

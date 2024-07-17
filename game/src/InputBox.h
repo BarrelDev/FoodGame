@@ -15,7 +15,7 @@ public:
 
 	bool IsItemTouching(std::shared_ptr<Item> item);
 
-	void SnapItemInBox(std::shared_ptr<Item> item);
+	void SnapItemInBox(std::shared_ptr<Item> item); // Snap the given item into the input box and set it as the held item.
 
 	void RemoveItem();
 
