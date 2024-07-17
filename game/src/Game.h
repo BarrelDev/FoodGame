@@ -3,6 +3,7 @@
 #include "raylib.h"
 #include <vector>
 #include <memory>
+#include <optional>
 
 #include "Constants.h"
 #include "Item.h"
@@ -26,16 +27,18 @@ std::vector<std::shared_ptr<Item>> items;
 std::vector<Texture2D> textures;
 
 // Collision for items.
-InputBox leftInput{(float)RenderConstants::kScreenWidth / 12.0f,
-                   (float)RenderConstants::kScreenHeight / 8.0f};
+std::shared_ptr<InputBox> leftInput{
+    std::make_shared<InputBox>((float)RenderConstants::kScreenWidth / 12.0f,
+                               (float)RenderConstants::kScreenHeight / 8.0f)};
 
-InputBox rightInput{(float)RenderConstants::kScreenWidth / 2.5f,
-                    (float)RenderConstants::kScreenHeight / 8.0f};
+std::shared_ptr<InputBox> rightInput{
+    std::make_shared<InputBox>((float)RenderConstants::kScreenWidth / 2.5f,
+                               (float)RenderConstants::kScreenHeight / 8.0f)};
 
 OutputBox outputBox{(float)RenderConstants::kScreenWidth / 1.4f,
                     (float)RenderConstants::kScreenHeight / 8.0f, 
-                    std::make_shared<InputBox>(leftInput), 
-                    std::make_shared<InputBox>(rightInput)};
+                    leftInput, 
+                    rightInput};
 
 // Temporary Rects for storing item spawn boxes.
 Rectangle optionOne;
@@ -47,6 +50,9 @@ Vector2 mousePos;
 
 bool isHolding;
 std::shared_ptr<Item> heldItem;
+
+std::shared_ptr<Item> outputItem;
+std::optional<Texture2D> outputTexture;
 
 bool isLeftClicking;
 bool isRightClicking;

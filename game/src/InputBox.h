@@ -19,7 +19,9 @@ public:
 
 	void RemoveItem();
 
-	std::shared_ptr<Item> GetHeldItem();
+	inline bool IsHoldingItem() { return m_heldItem != nullptr; };
+
+	inline std::shared_ptr<Item> GetHeldItem() { return m_heldItem; };
 
 	Rectangle GetRect();
 
@@ -31,4 +33,6 @@ private:
     std::shared_ptr<Item> m_heldItem;
 
     Vector2 m_position;
+
+	friend class OutputBox;
 };

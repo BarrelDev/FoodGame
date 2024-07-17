@@ -28,7 +28,7 @@ int main()
 	// Main Game Loop
 	while (!WindowShouldClose()) 
 	{
-      mousePos = GetMousePosition();
+		mousePos = GetMousePosition();
 		// Check if mouse button held
 		if (IsMouseButtonDown(0))
 			isLeftClicking = true;
@@ -66,24 +66,47 @@ int main()
 			if (mousePos.y <= (float)RenderConstants::kScreenHeight - heldItem->GetCenter().y && mousePos.y >= heldItem->GetCenter().y)
                 heldItem->SetY(mousePos.y);
         } else if(heldItem != nullptr) {
-                  if (leftInput.IsItemTouching(heldItem))
-                    leftInput.SnapItemInBox(heldItem);
-                  if (rightInput.IsItemTouching(heldItem))
-                    rightInput.SnapItemInBox(heldItem);
+                  if (leftInput->IsItemTouching(heldItem) && !leftInput->IsHoldingItem()) {
+                    leftInput->SnapItemInBox(heldItem);
+                    heldItem = nullptr;
+                  } else if (leftInput->GetHeldItem() == heldItem) {
+                    leftInput->RemoveItem();
+				  }
+				  if (rightInput->IsItemTouching(heldItem) &&
+                             !rightInput->IsHoldingItem()) {
+                    rightInput->SnapItemInBox(heldItem);
+                    heldItem = nullptr;
+				  } else if (rightInput->GetHeldItem() ==
+                                             heldItem) {
+					rightInput->RemoveItem(); 
+				  }
 		}
+
+		// Get the correct output item and load its data.
+
+		outputItem = outputBox.GetOutputItem();
+
+		if (outputItem != nullptr) 
+		{
+			outputTexture = {LoadTextureFromImage(outputItem->GetImage())};
+		} else if (outputTexture.has_value()) 
+		{
+			UnloadTexture(outputTexture.value());
+        }
+
 
 		// Render Frame
 		BeginDrawing();
 
 			ClearBackground(RAYWHITE);
 
-			DrawRectangleRec(leftInput.GetRect(), BLACK);
+			DrawRectangleRec(leftInput->GetRect(), BLACK);
 
-			DrawRectangleRec(rightInput.GetRect(), BLACK);
+			DrawRectangleRec(rightInput->GetRect(), BLACK);
 
 			DrawRectangleRec(outputBox.GetRect(), BLUE);
 
-			DrawText("I MADE MY FIRST WINDOW IN RAYLIB!!!", 190, 200, 20, BLACK);
+			DrawText("FOOD GAME", 190, 200, 20, BLACK);
 
 			for (auto &item : items) 
 			{
@@ -101,7 +124,21 @@ int main()
                                    20, BLACK);
             }
 			
-			if(leftInput.IsItemTouching(heldItem) || rightInput.IsItemTouching(heldItem))
+			if (outputItem != nullptr) 
+			{
+              DrawTexturePro(outputTexture.value(), outputItem->GetRect(),
+                             {outputItem->GetPosition().x, outputItem->GetPosition().y,
+                              outputItem->GetRect().width, outputItem->GetRect().height},
+                             outputItem->GetCenter(), 0, WHITE);
+
+              DrawText(
+                  outputItem->GetName().c_str(),
+                  (int)outputItem->GetPosition().x + RenderConstants::kTextOffsetX,
+                  (int)outputItem->GetPosition().y + RenderConstants::kTextOffsetY,
+                  20, BLACK);
+			}
+
+			if(leftInput->IsItemTouching(heldItem) || rightInput->IsItemTouching(heldItem))
                           DrawText("yes", 200, 300, 20, BLACK);
                         else
                           DrawText("no", 200, 300, 20, BLACK);
