@@ -86,12 +86,10 @@ int main()
 
 		outputItem = outputBox.GetOutputItem();
 
-		if (outputItem != nullptr) 
-		{
-			outputTexture = {LoadTextureFromImage(outputItem->GetImage())};
-		} else if (outputTexture.has_value()) 
+		if (outputTexture.has_value() && outputItem == nullptr) 
 		{
 			UnloadTexture(outputTexture.value());
+                  outputTexture = std::nullopt;
         }
 
 
@@ -126,6 +124,9 @@ int main()
 			
 			if (outputItem != nullptr) 
 			{
+              if (!outputTexture.has_value())
+                outputTexture = {LoadTextureFromImage(outputItem->GetImage())};
+
               DrawTexturePro(outputTexture.value(), outputItem->GetRect(),
                              {outputItem->GetPosition().x, outputItem->GetPosition().y,
                               outputItem->GetRect().width, outputItem->GetRect().height},

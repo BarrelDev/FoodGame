@@ -20,8 +20,15 @@ std::shared_ptr<Item> OutputBox::GetOutputItem() {
   // TODO: Setup a lookup table of all recipies
   if (leftItem != nullptr &&
       rightItem != nullptr) {
+    auto input = std::pair<ItemType, ItemType>{leftItem->GetType(), rightItem->GetType()};
+
+    ItemType outType = recipies.at(input);
+
+    if (m_heldItem != nullptr && outType == m_heldItem->GetType())
+      return m_heldItem;
+
     std::shared_ptr<Item> output = ItemFactory::CreateItemFromTypePos(
-        ItemType::OUTPUT, m_position.x + OutputBoxConstants::kWidth / 2.0f,
+        outType, m_position.x + OutputBoxConstants::kWidth / 2.0f,
         m_position.y + OutputBoxConstants::kHeight / 2.0f);
 
     m_heldItem = output;

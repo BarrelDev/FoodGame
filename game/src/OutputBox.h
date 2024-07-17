@@ -2,6 +2,9 @@
 
 #include "raylib.h"
 #include <memory>
+#include <map>
+#include <utility>
+
 #include "Item.h"
 #include "InputBox.h"
 
@@ -34,4 +37,9 @@ private:
   std::shared_ptr<InputBox> m_rightInput;
 
   Vector2 m_position;
+
+  const static inline std::map<std::pair<ItemType, ItemType>, ItemType> recipies{
+	  {{ItemType::STAR, ItemType::ITEM}, ItemType::OUTPUT},
+      {{ItemType::ITEM, ItemType::STAR}, ItemType::OUTPUT}
+  };
 };
