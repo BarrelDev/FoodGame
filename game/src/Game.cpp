@@ -13,9 +13,13 @@ int main() {
   items.push_back(starItem);
   items.push_back(testItem);
 
-  optionBox.SpawnItemInBox();
+  optionBox_left.SpawnItemInBox();
+  optionBox_center.SpawnItemInBox();
+  optionBox_right.SpawnItemInBox();
 
-  items.push_back(optionBox.GetHeldItem());
+  items.push_back(optionBox_left.GetHeldItem());
+  items.push_back(optionBox_center.GetHeldItem());
+  items.push_back(optionBox_right.GetHeldItem());
 
   for (auto item : items) {
     std::cout << item->GetID() << ":" << item->GetName() << std::endl;
@@ -82,11 +86,6 @@ int main() {
 
     outputItem = outputBox.GetOutputItem();
 
-    if (outputTexture.has_value() && outputItem == nullptr) {
-      UnloadTexture(outputTexture.value());
-      outputTexture = std::nullopt;
-    }
-
     // Render Frame
     BeginDrawing();
 
@@ -98,7 +97,7 @@ int main() {
 
     DrawRectangleRec(outputBox.GetRect(), BLUE);
 
-    DrawRectangleRec(optionBox.GetRect(), RED);
+    DrawRectangleRec(optionBox_left.GetRect(), RED);
 
     DrawText("FOOD GAME", 190, 200, 20, BLACK);
 
@@ -118,11 +117,11 @@ int main() {
     }
 
     if (outputItem != nullptr) {
-      if (!outputTexture.has_value())
-        outputTexture = {LoadTextureFromImage(outputItem->GetImage())};
+      TextureManager::UpdateItemTextures(outputItem);
 
       DrawTexturePro(
-          outputTexture.value(), outputItem->GetRect(),
+          TextureManager::GetTextureFromItemType(outputItem->GetType()),
+          outputItem->GetRect(),
           {outputItem->GetPosition().x, outputItem->GetPosition().y,
            outputItem->GetRect().width, outputItem->GetRect().height},
           outputItem->GetCenter(), 0, WHITE);

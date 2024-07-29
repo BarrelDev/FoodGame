@@ -41,8 +41,14 @@ OutputBox outputBox{(float)RenderConstants::kScreenWidth / 1.4f,
                     (float)RenderConstants::kScreenHeight / 8.0f, leftInput,
                     rightInput};
 
-OptionBox optionBox{(float)RenderConstants::kScreenWidth / 12.0f,
-                    (float)RenderConstants::kScreenHeight / 1.5f};
+OptionBox optionBox_left{(float)RenderConstants::kScreenWidth / 12.0f,
+                         (float)RenderConstants::kScreenHeight / 1.5f};
+
+OptionBox optionBox_center{(float)RenderConstants::kScreenWidth / 2.5f,
+                           (float)RenderConstants::kScreenHeight / 1.5f};
+
+OptionBox optionBox_right{(float)RenderConstants::kScreenWidth / 1.4f,
+                          (float)RenderConstants::kScreenHeight / 1.5f};
 
 // Temporary Rects for storing item spawn boxes.
 Rectangle optionOne;
@@ -56,7 +62,6 @@ bool isHolding;
 std::shared_ptr<Item> heldItem;
 
 std::shared_ptr<Item> outputItem;
-std::optional<Texture2D> outputTexture;
 
 bool isLeftClicking;
 bool isRightClicking;
