@@ -11,6 +11,7 @@
 #include "OptionBox.h"
 #include "OutputBox.h"
 #include "raylib.h"
+#include "TextureManager.h"
 
 // Store ball shape position
 Vector2 ballPosition{RenderConstants::kScreenWidth / 2.0f,
@@ -26,7 +27,6 @@ std::shared_ptr<Item> testItem = ItemFactory::CreateItemFromTypePos(
 
 // Store items and their respective textures dynamically for easy access.
 std::vector<std::shared_ptr<Item>> items;
-std::vector<Texture2D> textures;
 
 // Collision for items.
 std::shared_ptr<InputBox> leftInput{

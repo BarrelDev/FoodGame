@@ -10,28 +10,17 @@ int main() {
 
   SetTargetFPS(RenderConstants::kTargetFPS);
 
-  // Load Textures from Item Images
-  Texture2D itemTexture = {LoadTextureFromImage(testItem->GetImage())};
-  Texture2D starTexture = {LoadTextureFromImage(starItem->GetImage())};
-
   items.push_back(starItem);
   items.push_back(testItem);
-
-  textures.reserve(items.size());
-  textures.push_back(starTexture);
-
-  textures.insert(textures.begin() + testItem->GetID(), itemTexture);
-  textures.insert(textures.begin() + starItem->GetID(), starTexture);
 
   optionBox.SpawnItemInBox();
 
   items.push_back(optionBox.GetHeldItem());
 
-  Texture2D optionTexture = {
-      LoadTextureFromImage(optionBox.GetHeldItem()->GetImage())};
-
-  textures.insert(textures.begin() + optionBox.GetHeldItem()->GetID(),
-                  optionTexture);
+  for (auto item : items) {
+    std::cout << item->GetID() << ":" << item->GetName() << std::endl;
+    TextureManager::UpdateItemTextures(item);
+  }
 
   // Main Game Loop
   while (!WindowShouldClose()) {
@@ -115,8 +104,9 @@ int main() {
 
     // Render loaded items.
 
-    for (auto &item : items) {
-      DrawTexturePro(textures[item->GetID() + 1], item->GetRect(),
+    for (auto item : items) {
+      DrawTexturePro(TextureManager::GetTextureFromItemType(item->GetType()),
+                     item->GetRect(),
                      {item->GetPosition().x, item->GetPosition().y,
                       item->GetRect().width, item->GetRect().height},
                      item->GetCenter(), 0, WHITE);
@@ -148,9 +138,7 @@ int main() {
   }
 
   // Unload Textures
-  for (int i = 0; i < textures.size(); i++) {
-    UnloadTexture(textures[i]);
-  }
+  TextureManager::UnloadItemTextures();
 
   CloseWindow();
 
