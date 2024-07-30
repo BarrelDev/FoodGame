@@ -10,9 +10,16 @@ int main() {
 
   SetTargetFPS(RenderConstants::kTargetFPS);
 
-  optionBox_left.SpawnItemInBox();
-  optionBox_center.SpawnItemInBox();
-  optionBox_right.SpawnItemInBox();
+  do {
+    optionBox_left.SpawnItemInBox();
+    optionBox_center.SpawnItemInBox();
+    optionBox_right.SpawnItemInBox();
+  } while (!IsValidOptionCombination(optionBox_left.GetHeldItem()->GetType(),
+                                     optionBox_center.GetHeldItem()->GetType(),
+                                     optionBox_right.GetHeldItem()->GetType()));
+
+  Texture2D addIcon{LoadTexture("resources/textures/plus.png")};
+  Texture2D equalIcon{LoadTexture("resources/textures/equals.png")};
 
   items.push_back(optionBox_left.GetHeldItem());
   items.push_back(optionBox_center.GetHeldItem());
@@ -83,10 +90,23 @@ int main() {
 
     outputItem = outputBox.GetOutputItem();
 
+    if (outputItem != nullptr) {
+      TextureManager::UpdateItemTextures(outputItem);
+      items.push_back(outputItem);
+
+      DestroyItem(leftInput->GetHeldItem());
+      DestroyItem(rightInput->GetHeldItem());
+    }
+
     // Render Frame
     BeginDrawing();
 
     ClearBackground(RAYWHITE);
+
+    DrawText(TextFormat("Score: %04i", score), 10, 10, 40, BLACK);
+
+    DrawText(TextFormat("%02i:%02i", 0, 0), RenderConstants::kScreenWidth - 110,
+             10, 40, BLACK);
 
     DrawRectangleRec(leftInput->GetRect(), BLACK);
 
@@ -99,6 +119,12 @@ int main() {
     DrawRectangleRec(optionBox_center.GetRect(), RED);
 
     DrawRectangleRec(optionBox_right.GetRect(), RED);
+
+    DrawTexture(addIcon, RenderConstants::kScreenWidth / 3.65f,
+                RenderConstants::kScreenHeight / 8.0f, WHITE);
+
+    DrawTexture(equalIcon, RenderConstants::kScreenWidth / 1.7f,
+                RenderConstants::kScreenHeight / 8.0f, WHITE);
 
     DrawText("FOOD GAME", 190, 200, 20, BLACK);
 
@@ -117,23 +143,6 @@ int main() {
                BLACK);
     }
 
-    if (outputItem != nullptr) {
-      TextureManager::UpdateItemTextures(outputItem);
-
-      DrawTexturePro(
-          TextureManager::GetTextureFromItemType(outputItem->GetType()),
-          outputItem->GetRect(),
-          {outputItem->GetPosition().x, outputItem->GetPosition().y,
-           outputItem->GetRect().width, outputItem->GetRect().height},
-          outputItem->GetCenter(), 0, WHITE);
-
-      DrawText(
-          outputItem->GetName().c_str(),
-          (int)outputItem->GetPosition().x + RenderConstants::kTextOffsetX - 10,
-          (int)outputItem->GetPosition().y + RenderConstants::kTextOffsetY, 20,
-          BLACK);
-    }
-
     EndDrawing();
   }
 
@@ -143,4 +152,20 @@ int main() {
   CloseWindow();
 
   return 0;
+}
+
+bool IsValidOptionCombination(ItemType one, ItemType two, ItemType three) {
+  if (OutputBox::IsPairInMap(one, two)) return true;
+  if (OutputBox::IsPairInMap(one, three)) return true;
+  if (OutputBox::IsPairInMap(two, three)) return true;
+
+  return false;
+}
+
+void DestroyItem(std::shared_ptr<Item> item) {
+  auto it = std::find(items.begin(), items.end(), item);
+
+  if (it == items.end()) return;
+
+  items.erase(it);
 }

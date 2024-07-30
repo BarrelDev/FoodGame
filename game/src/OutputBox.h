@@ -28,6 +28,8 @@ class OutputBox {
 
   std::shared_ptr<Item> GetOutputItem();
 
+  static bool IsPairInMap(ItemType one, ItemType two);
+
  private:
   Rectangle m_box;
 

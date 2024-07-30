@@ -58,4 +58,10 @@ std::shared_ptr<Item> outputItem;
 bool isLeftClicking;
 bool isRightClicking;
 
+static int score = 0;
+
 int main();
+
+bool IsValidOptionCombination(ItemType one, ItemType two, ItemType three);
+
+void DestroyItem(std::shared_ptr<Item> item);

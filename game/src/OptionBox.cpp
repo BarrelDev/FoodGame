@@ -23,6 +23,8 @@ bool OptionBox::IsItemTouching(std::shared_ptr<Item> item) {
 }
 
 void OptionBox::SpawnItemInBox() {
+  m_heldItem = nullptr;
+
   std::random_device rd;
   std::uniform_int_distribution<int> dist(STAR, NONE - 1);
 

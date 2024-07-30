@@ -42,6 +42,14 @@ std::shared_ptr<Item> OutputBox::GetOutputItem() {
   return nullptr;
 }
 
+bool OutputBox::IsPairInMap(ItemType one, ItemType two) {
+  auto input = std::pair<ItemType, ItemType>{one, two};
+  auto it = recipies.find(input);
+  if (it == recipies.end()) return false;
+
+  return true;
+}
+
 Rectangle OutputBox::GetRect() { return m_box; }
 
 Vector2 OutputBox::GetPosition() { return m_position; }
