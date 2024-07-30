@@ -10,9 +10,6 @@ int main() {
 
   SetTargetFPS(RenderConstants::kTargetFPS);
 
-  items.push_back(starItem);
-  items.push_back(testItem);
-
   optionBox_left.SpawnItemInBox();
   optionBox_center.SpawnItemInBox();
   optionBox_right.SpawnItemInBox();
@@ -98,6 +95,10 @@ int main() {
     DrawRectangleRec(outputBox.GetRect(), BLUE);
 
     DrawRectangleRec(optionBox_left.GetRect(), RED);
+
+    DrawRectangleRec(optionBox_center.GetRect(), RED);
+
+    DrawRectangleRec(optionBox_right.GetRect(), RED);
 
     DrawText("FOOD GAME", 190, 200, 20, BLACK);
 

@@ -22,13 +22,13 @@ class OptionBox {
 
   void RemoveItem();
 
-  inline bool IsHoldingItem() { return m_heldItem != nullptr; };
+  inline bool IsHoldingItem() const { return m_heldItem != nullptr; };
 
   inline std::shared_ptr<Item> GetHeldItem() { return m_heldItem; };
 
-  Rectangle GetRect();
+  Rectangle GetRect() const;
 
-  Vector2 GetPosition();
+  Vector2 GetPosition() const;
 
  private:
   Rectangle m_box;

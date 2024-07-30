@@ -1,7 +1,7 @@
 #include "OptionBox.h"
 
-#include <cstdlib>
-#include <ctime>
+#include <iostream>
+#include <random>
 
 OptionBox::OptionBox(float x, float y)
     : m_position{x, y},
@@ -23,10 +23,13 @@ bool OptionBox::IsItemTouching(std::shared_ptr<Item> item) {
 }
 
 void OptionBox::SpawnItemInBox() {
-  std::srand(std::time(nullptr));
+  std::random_device rd;
+  std::uniform_int_distribution<int> dist(STAR, NONE - 1);
+
+  std::cout << dist(rd) << std::endl;
 
   auto item = ItemFactory::CreateItemFromTypePos(
-      static_cast<ItemType>(std::rand() % NONE),
+      static_cast<ItemType>(dist(rd)),
       m_position.x + OptionBoxConstants::kWidth,
       m_position.y + OptionBoxConstants::kHeight);
   item->SetX(m_position.x + OptionBoxConstants::kWidth / 2.0f);
@@ -36,6 +39,6 @@ void OptionBox::SpawnItemInBox() {
 
 void OptionBox::RemoveItem() { m_heldItem = nullptr; }
 
-Rectangle OptionBox::GetRect() { return m_box; }
+Rectangle OptionBox::GetRect() const { return m_box; }
 
-Vector2 OptionBox::GetPosition() { return m_position; }
+Vector2 OptionBox::GetPosition() const { return m_position; }

@@ -17,14 +17,6 @@
 Vector2 ballPosition{RenderConstants::kScreenWidth / 2.0f,
                      RenderConstants::kScreenHeight / 4.0f};
 
-// Create Items with Images
-std::shared_ptr<Item> starItem = ItemFactory::CreateItemFromTypePos(
-    ItemType::STAR, (float)RenderConstants::kScreenWidth / 6.0f, 200.0f);
-
-std::shared_ptr<Item> testItem = ItemFactory::CreateItemFromTypePos(
-    ItemType::ITEM, (float)RenderConstants::kScreenWidth / 2.0f,
-    3.0f * (float)(RenderConstants::kScreenHeight / 4));
-
 // Store items and their respective textures dynamically for easy access.
 std::vector<std::shared_ptr<Item>> items;
 
