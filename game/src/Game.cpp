@@ -5,6 +5,7 @@
 #include <__msvc_ostream.hpp>
 #include <iostream>
 #include <memory>
+#include <string>
 
 #include "Constants.h"
 #include "Item.h"
@@ -30,9 +31,9 @@ int main() {
   Texture2D addIcon{LoadTexture("resources/textures/plus.png")};
   Texture2D equalIcon{LoadTexture("resources/textures/equals.png")};
 
-  items.push_back(optionBox_left.GetHeldItem());
-  items.push_back(optionBox_center.GetHeldItem());
-  items.push_back(optionBox_right.GetHeldItem());
+  AddItem(optionBox_left.GetHeldItem());
+  AddItem(optionBox_center.GetHeldItem());
+  AddItem(optionBox_right.GetHeldItem());
 
   for (auto item : items) {
     std::cout << item->GetID() << ":" << item->GetName() << std::endl;
@@ -103,7 +104,7 @@ int main() {
 
     if (outputItem != nullptr) {
       TextureManager::UpdateItemTextures(outputItem);
-      items.push_back(outputItem);
+      AddItem(outputItem);
 
       // Delete the input items once the output has been picked up.
       if (heldItem == outputItem && leftInput->IsHoldingItem() &&
@@ -113,8 +114,16 @@ int main() {
         DestroyItem(rightInput->GetHeldItem());
         rightInput->RemoveItem();
 
+        holdingOutput = true;
+
         score++;
       }
+    }
+
+    if (holdingOutput && !isHolding) {
+      holdingOutput = false;
+
+      DestroyItem(heldItem);
     }
 
     // Render Frame
@@ -188,4 +197,15 @@ bool DestroyItem(std::shared_ptr<Item> item) {
 
   items.erase(it);
   return true;
+}
+
+bool AddItem(std::shared_ptr<Item> item) {
+  auto it = std::find(items.begin(), items.end(), item);
+
+  if (it == items.end()) {
+    items.push_back(item);
+    return true;
+  }
+
+  return false;
 }

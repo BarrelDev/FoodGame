@@ -48,6 +48,8 @@ Rectangle optionThree;
 Vector2 mousePos;
 
 bool isHolding;
+bool holdingOutput;
+
 std::shared_ptr<Item> heldItem;
 
 std::shared_ptr<Item> outputItem;
@@ -66,3 +68,10 @@ bool IsValidOptionCombination(ItemType one, ItemType two, ItemType three);
     @return Whether the destroy was successful or not.
 */
 bool DestroyItem(std::shared_ptr<Item> item);
+
+/**
+    Helper method for quickly adding items from the draw calls without repeating
+   items.
+    @return Whether the add was successful or not.
+*/
+bool AddItem(std::shared_ptr<Item> item);
