@@ -1,6 +1,15 @@
 #include "Game.h"
 
+#include <raylib.h>
+
+#include <__msvc_ostream.hpp>
 #include <iostream>
+#include <memory>
+
+#include "Constants.h"
+#include "Item.h"
+#include "OutputBox.h"
+#include "TextureManager.h"
 
 int main() {
   std::cout << "starting" << std::endl;
@@ -90,12 +99,22 @@ int main() {
 
     outputItem = outputBox.GetOutputItem();
 
+    // Display the possible output
+
     if (outputItem != nullptr) {
       TextureManager::UpdateItemTextures(outputItem);
       items.push_back(outputItem);
 
-      DestroyItem(leftInput->GetHeldItem());
-      DestroyItem(rightInput->GetHeldItem());
+      // Delete the input items once the output has been picked up.
+      if (heldItem == outputItem && leftInput->IsHoldingItem() &&
+          rightInput->IsHoldingItem()) {
+        DestroyItem(leftInput->GetHeldItem());
+        leftInput->RemoveItem();
+        DestroyItem(rightInput->GetHeldItem());
+        rightInput->RemoveItem();
+
+        score++;
+      }
     }
 
     // Render Frame
@@ -162,10 +181,11 @@ bool IsValidOptionCombination(ItemType one, ItemType two, ItemType three) {
   return false;
 }
 
-void DestroyItem(std::shared_ptr<Item> item) {
+bool DestroyItem(std::shared_ptr<Item> item) {
   auto it = std::find(items.begin(), items.end(), item);
 
-  if (it == items.end()) return;
+  if (it == items.end()) return false;
 
   items.erase(it);
+  return true;
 }

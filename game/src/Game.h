@@ -1,17 +1,14 @@
 #pragma once
 
 #include <memory>
-#include <optional>
 #include <vector>
 
 #include "Constants.h"
 #include "InputBox.h"
 #include "Item.h"
-#include "ItemFactory.h"
 #include "OptionBox.h"
 #include "OutputBox.h"
 #include "raylib.h"
-#include "TextureManager.h"
 
 // Store ball shape position
 Vector2 ballPosition{RenderConstants::kScreenWidth / 2.0f,
@@ -64,4 +61,8 @@ int main();
 
 bool IsValidOptionCombination(ItemType one, ItemType two, ItemType three);
 
-void DestroyItem(std::shared_ptr<Item> item);
+/**
+    Helper method for quickly removing items from the draw calls.
+    @return Whether the destroy was successful or not.
+*/
+bool DestroyItem(std::shared_ptr<Item> item);
