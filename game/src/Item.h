@@ -6,7 +6,7 @@
 
 static int id = 0;
 
-enum ItemType { STAR, ITEM, OUTPUT, NONE };
+enum ItemType { STAR = 0, ITEM, OUTPUT, NONE };
 
 class Item {
  public:

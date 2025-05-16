@@ -1,7 +1,14 @@
 #include "OptionBox.h"
 
+#include <raylib.h>
+
+#include <__msvc_ostream.hpp>
 #include <iostream>
+#include <memory>
 #include <random>
+
+#include "Item.h"
+#include "ItemFactory.h"
 
 OptionBox::OptionBox(float x, float y)
     : m_position{x, y},
@@ -26,12 +33,12 @@ void OptionBox::SpawnItemInBox() {
   m_heldItem = nullptr;
 
   std::random_device rd;
-  std::uniform_int_distribution<int> dist(STAR, NONE - 1);
+  std::uniform_int_distribution<int> dist(0, ItemFactory::inputs.size() - 1);
 
   std::cout << dist(rd) << std::endl;
 
   auto item = ItemFactory::CreateItemFromTypePos(
-      static_cast<ItemType>(dist(rd)),
+      ItemFactory::inputs.at(dist(rd)),
       m_position.x + OptionBoxConstants::kWidth,
       m_position.y + OptionBoxConstants::kHeight);
   item->SetX(m_position.x + OptionBoxConstants::kWidth / 2.0f);

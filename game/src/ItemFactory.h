@@ -1,11 +1,11 @@
 #pragma once
 
+#include <array>
 #include <map>
 #include <memory>
 #include <string>
 
 #include "Item.h"
-#include "raylib.h"
 
 namespace ItemFactory {
 const inline std::map<ItemType, std::string> names{
@@ -13,6 +13,9 @@ const inline std::map<ItemType, std::string> names{
     {ItemType::STAR, "Star"},
     {ItemType::ITEM, "Item"},
     {ItemType::OUTPUT, "Output"}};
+
+const inline std::array<ItemType, ItemType::NONE> inputs{ItemType::STAR,
+                                                         ItemType::ITEM};
 
 const inline std::map<ItemType, std::string> textureFiles{
     {ItemType::NONE, "resources/textures/none.png"},
