@@ -133,6 +133,7 @@ int main() {
       holdingOutput = false;
 
       DestroyItem(heldItem);
+      outputBox.RemoveItem();
       GenerateNewItems();
     }
 
