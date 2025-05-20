@@ -80,18 +80,18 @@ int main() {
               (float)RenderConstants::kScreenHeight - heldItem->GetCenter().y &&
           mousePos.y >= heldItem->GetCenter().y)
         heldItem->SetY(mousePos.y);
-      if (optionBox_left.GetHeldItem() == heldItem) {
-        optionBox_left.RemoveItem();
-      }
-      if (optionBox_center.GetHeldItem() == heldItem) {
-        optionBox_center.RemoveItem();
-      }
-      if (optionBox_right.GetHeldItem() == heldItem) {
-        optionBox_right.RemoveItem();
-      }
     } else if (heldItem != nullptr) {
       if (leftInput->IsItemTouching(heldItem) && !leftInput->IsHoldingItem()) {
         leftInput->SnapItemInBox(heldItem);
+        if (optionBox_left.GetHeldItem() == heldItem) {
+          optionBox_left.RemoveItem();
+        }
+        if (optionBox_center.GetHeldItem() == heldItem) {
+          optionBox_center.RemoveItem();
+        }
+        if (optionBox_right.GetHeldItem() == heldItem) {
+          optionBox_right.RemoveItem();
+        }
         heldItem = nullptr;
       } else if (leftInput->GetHeldItem() == heldItem) {
         leftInput->RemoveItem();
@@ -99,6 +99,15 @@ int main() {
       if (rightInput->IsItemTouching(heldItem) &&
           !rightInput->IsHoldingItem()) {
         rightInput->SnapItemInBox(heldItem);
+        if (optionBox_left.GetHeldItem() == heldItem) {
+          optionBox_left.RemoveItem();
+        }
+        if (optionBox_center.GetHeldItem() == heldItem) {
+          optionBox_center.RemoveItem();
+        }
+        if (optionBox_right.GetHeldItem() == heldItem) {
+          optionBox_right.RemoveItem();
+        }
         heldItem = nullptr;
       } else if (rightInput->GetHeldItem() == heldItem) {
         rightInput->RemoveItem();
@@ -134,7 +143,7 @@ int main() {
 
       DestroyItem(heldItem);
       outputBox.RemoveItem();
-      GenerateNewItems();
+      RegenerateInputItems();
     }
 
     // Render Frame
@@ -223,7 +232,7 @@ bool AddItem(std::shared_ptr<Item> item) {
   return false;
 }
 
-void GenerateNewItems() {
+void RegenerateInputItems() {
   bool leftHas = !optionBox_left.IsHoldingItem();
   bool centerHas = !optionBox_center.IsHoldingItem();
   bool rightHas = !optionBox_right.IsHoldingItem();

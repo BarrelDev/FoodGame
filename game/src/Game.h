@@ -76,4 +76,12 @@ bool DestroyItem(std::shared_ptr<Item> item);
 */
 bool AddItem(std::shared_ptr<Item> item);
 
-void GenerateNewItems();
+/*
+    Regenerates items into input boxes.
+*/
+void RegenerateInputItems();
+
+/*
+    Draws the frame each game loop.
+*/
+void DrawFrame();
