@@ -153,8 +153,12 @@ int main() {
 
     DrawText(TextFormat("Score: %04i", score), 10, 10, 40, BLACK);
 
-    DrawText(TextFormat("%02i:%02i", 0, 0), RenderConstants::kScreenWidth - 110,
-             10, 40, BLACK);
+    DrawText(TextFormat("%02i:%02i",
+                        timer / RenderConstants::kTargetFPS /
+                            GameConstants::kSecondsPerMinute,
+                        timer / RenderConstants::kTargetFPS %
+                            GameConstants::kSecondsPerMinute),
+             RenderConstants::kScreenWidth - 110, 10, 40, BLACK);
 
     DrawRectangleRec(leftInput->GetRect(), BLACK);
 
@@ -194,6 +198,7 @@ int main() {
     }
 
     EndDrawing();
+    timer--;
   }
 
   // Unload Textures

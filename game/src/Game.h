@@ -59,6 +59,8 @@ bool isRightClicking;
 
 static int score = 0;
 
+static int timer = GameConstants::kTotalFrames;
+
 int main();
 
 bool IsValidOptionCombination(ItemType one, ItemType two, ItemType three);

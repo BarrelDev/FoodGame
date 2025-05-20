@@ -10,6 +10,16 @@ constexpr int kTextOffsetY = 50;
 constexpr int kTextOffsetX = -20;
 }  // namespace RenderConstants
 
+namespace GameConstants {
+constexpr int kTotalFrames = 3000;
+constexpr int kSecondsPerMinute = 60;
+
+constexpr int testMinute =
+    kTotalFrames / RenderConstants::kTargetFPS / kSecondsPerMinute;
+constexpr int testSeconds =
+    kTotalFrames / RenderConstants::kTargetFPS % kSecondsPerMinute;
+};  // namespace GameConstants
+
 namespace BoxConstants {
 constexpr int kBoxWidth = 150;
 constexpr int kBoxHeight = 100;
