@@ -75,3 +75,5 @@ bool DestroyItem(std::shared_ptr<Item> item);
     @return Whether the add was successful or not.
 */
 bool AddItem(std::shared_ptr<Item> item);
+
+void GenerateNewItems();
