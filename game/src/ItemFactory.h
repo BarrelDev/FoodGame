@@ -17,6 +17,8 @@ const inline std::map<ItemType, std::string> names{
 const inline std::array<ItemType, ItemType::NONE> inputs{ItemType::STAR,
                                                          ItemType::ITEM};
 
+const inline std::array<ItemType, ItemType::NONE> outputs{ItemType::OUTPUT};
+
 const inline std::map<ItemType, std::string> textureFiles{
     {ItemType::NONE, "resources/textures/none.png"},
     {ItemType::STAR, "resources/textures/new star.png"},

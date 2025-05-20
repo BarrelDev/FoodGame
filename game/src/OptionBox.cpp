@@ -33,7 +33,8 @@ void OptionBox::SpawnItemInBox() {
   m_heldItem = nullptr;
 
   std::random_device rd;
-  std::uniform_int_distribution<int> dist(0, ItemFactory::inputs.size() - 1);
+  std::uniform_int_distribution<int> dist(
+      0, static_cast<int>(ItemFactory::inputs.size()) - 1);
 
   std::cout << dist(rd) << std::endl;
 

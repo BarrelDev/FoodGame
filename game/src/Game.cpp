@@ -148,11 +148,13 @@ int main() {
 
     DrawRectangleRec(optionBox_right.GetRect(), RED);
 
-    DrawTexture(addIcon, RenderConstants::kScreenWidth / 3.65f,
-                RenderConstants::kScreenHeight / 8.0f, WHITE);
+    DrawTexture(addIcon,
+                static_cast<int>(RenderConstants::kScreenWidth / 3.65f),
+                static_cast<int>(RenderConstants::kScreenHeight / 8.0f), WHITE);
 
-    DrawTexture(equalIcon, RenderConstants::kScreenWidth / 1.7f,
-                RenderConstants::kScreenHeight / 8.0f, WHITE);
+    DrawTexture(equalIcon,
+                static_cast<int>(RenderConstants::kScreenWidth / 1.7f),
+                static_cast<int>(RenderConstants::kScreenHeight / 8.0f), WHITE);
 
     DrawText("FOOD GAME", 190, 200, 20, BLACK);
 
