@@ -150,54 +150,61 @@ int main() {
     BeginDrawing();
 
     ClearBackground(RAYWHITE);
+    if (timer >= 0) {
+      DrawText(TextFormat("Score: %04i", score), 10, 10, 40, BLACK);
 
-    DrawText(TextFormat("Score: %04i", score), 10, 10, 40, BLACK);
+      DrawText(TextFormat("%02i:%02i",
+                          timer / RenderConstants::kTargetFPS /
+                              GameConstants::kSecondsPerMinute,
+                          timer / RenderConstants::kTargetFPS %
+                              GameConstants::kSecondsPerMinute),
+               RenderConstants::kScreenWidth - 110, 10, 40, BLACK);
 
-    DrawText(TextFormat("%02i:%02i",
-                        timer / RenderConstants::kTargetFPS /
-                            GameConstants::kSecondsPerMinute,
-                        timer / RenderConstants::kTargetFPS %
-                            GameConstants::kSecondsPerMinute),
-             RenderConstants::kScreenWidth - 110, 10, 40, BLACK);
+      DrawRectangleRec(leftInput->GetRect(), BLACK);
 
-    DrawRectangleRec(leftInput->GetRect(), BLACK);
+      DrawRectangleRec(rightInput->GetRect(), BLACK);
 
-    DrawRectangleRec(rightInput->GetRect(), BLACK);
+      DrawRectangleRec(outputBox.GetRect(), BLUE);
 
-    DrawRectangleRec(outputBox.GetRect(), BLUE);
+      DrawRectangleRec(optionBox_left.GetRect(), RED);
 
-    DrawRectangleRec(optionBox_left.GetRect(), RED);
+      DrawRectangleRec(optionBox_center.GetRect(), RED);
 
-    DrawRectangleRec(optionBox_center.GetRect(), RED);
+      DrawRectangleRec(optionBox_right.GetRect(), RED);
 
-    DrawRectangleRec(optionBox_right.GetRect(), RED);
+      DrawTexture(
+          addIcon, static_cast<int>(RenderConstants::kScreenWidth / 3.65f),
+          static_cast<int>(RenderConstants::kScreenHeight / 8.0f), WHITE);
 
-    DrawTexture(addIcon,
-                static_cast<int>(RenderConstants::kScreenWidth / 3.65f),
-                static_cast<int>(RenderConstants::kScreenHeight / 8.0f), WHITE);
+      DrawTexture(
+          equalIcon, static_cast<int>(RenderConstants::kScreenWidth / 1.7f),
+          static_cast<int>(RenderConstants::kScreenHeight / 8.0f), WHITE);
 
-    DrawTexture(equalIcon,
-                static_cast<int>(RenderConstants::kScreenWidth / 1.7f),
-                static_cast<int>(RenderConstants::kScreenHeight / 8.0f), WHITE);
+      DrawText("FOOD GAME", 190, 200, 20, BLACK);
 
-    DrawText("FOOD GAME", 190, 200, 20, BLACK);
+      // Render loaded items.
 
-    // Render loaded items.
+      for (auto item : items) {
+        DrawTexturePro(TextureManager::GetTextureFromItemType(item->GetType()),
+                       item->GetRect(),
+                       {item->GetPosition().x, item->GetPosition().y,
+                        item->GetRect().width, item->GetRect().height},
+                       item->GetCenter(), 0, WHITE);
 
-    for (auto item : items) {
-      DrawTexturePro(TextureManager::GetTextureFromItemType(item->GetType()),
-                     item->GetRect(),
-                     {item->GetPosition().x, item->GetPosition().y,
-                      item->GetRect().width, item->GetRect().height},
-                     item->GetCenter(), 0, WHITE);
+        DrawText(item->GetName().c_str(),
+                 (int)item->GetPosition().x + RenderConstants::kTextOffsetX,
+                 (int)item->GetPosition().y + RenderConstants::kTextOffsetY, 20,
+                 BLACK);
+      }
+    } else {
+      DrawText(TextFormat("Score: %04i", score), 10, 10, 40, BLACK);
 
-      DrawText(item->GetName().c_str(),
-               (int)item->GetPosition().x + RenderConstants::kTextOffsetX,
-               (int)item->GetPosition().y + RenderConstants::kTextOffsetY, 20,
-               BLACK);
+      DrawText(TextFormat("%02i:%02i", 0, 0),
+               RenderConstants::kScreenWidth - 110, 10, 40, BLACK);
+      DrawText("GAME OVER", 190, 200, 20, BLACK);
     }
-
     EndDrawing();
+
     timer--;
   }
 
