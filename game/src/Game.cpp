@@ -134,7 +134,13 @@ int main() {
 
         holdingOutput = true;
 
-        score++;
+        score += static_cast<int>(GetMultiplier());
+        timeSinceLastScore = prevScoreTime - timer;
+        prevScoreTime = timer;
+
+        std::cout << "Score: " << score << " Time Since: " << timeSinceLastScore
+                  << " Prev Time: " << prevScoreTime
+                  << " Multiplier: " << multiplier << std::endl;
       }
     }
 
@@ -142,6 +148,7 @@ int main() {
       holdingOutput = false;
 
       DestroyItem(heldItem);
+      DestroyItem(outputBox.GetHeldItem());
       outputBox.RemoveItem();
       RegenerateInputItems();
     }
@@ -260,4 +267,15 @@ void RegenerateInputItems() {
   if (leftHas) AddItem(optionBox_left.GetHeldItem());
   if (rightHas) AddItem(optionBox_right.GetHeldItem());
   if (centerHas) AddItem(optionBox_center.GetHeldItem());
+}
+
+float GetMultiplier() {
+  if (timeSinceLastScore < GameConstants::kMultiplierTime) {
+    multiplier += GameConstants::kMultiplierGrowthRate;
+    if (multiplierTime > 15) multiplierTime -= 15;
+  } else {
+    multiplier = 1.0f;
+    multiplierTime = GameConstants::kMultiplierTime;
+  }
+  return multiplier;
 }

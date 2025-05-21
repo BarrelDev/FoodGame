@@ -59,7 +59,15 @@ bool isRightClicking;
 
 static int score = 0;
 
+static int timeSinceLastScore = GameConstants::kTotalFrames;
+
+static int prevScoreTime = GameConstants::kTotalFrames;
+
 static int timer = GameConstants::kTotalFrames;
+
+static float multiplier = 1.0f;
+
+static int multiplierTime = GameConstants::kMultiplierTime;
 
 int main();
 
@@ -83,7 +91,4 @@ bool AddItem(std::shared_ptr<Item> item);
 */
 void RegenerateInputItems();
 
-/*
-    Draws the frame each game loop.
-*/
-void DrawFrame();
+float GetMultiplier();
