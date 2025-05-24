@@ -9,6 +9,7 @@
 
 #include "Constants.h"
 #include "Item.h"
+#include "ItemFactory.h"
 #include "OutputBox.h"
 #include "TextureManager.h"
 
@@ -81,33 +82,17 @@ int main() {
           mousePos.y >= heldItem->GetCenter().y)
         heldItem->SetY(mousePos.y);
     } else if (heldItem != nullptr) {
-      if (leftInput->IsItemTouching(heldItem) && !leftInput->IsHoldingItem()) {
+      bool isInput = ItemFactory::IsInputType(heldItem->GetType());
+      if (leftInput->IsItemTouching(heldItem) && !leftInput->IsHoldingItem() &&
+          isInput) {
         leftInput->SnapItemInBox(heldItem);
-        if (optionBox_left.GetHeldItem() == heldItem) {
-          optionBox_left.RemoveItem();
-        }
-        if (optionBox_center.GetHeldItem() == heldItem) {
-          optionBox_center.RemoveItem();
-        }
-        if (optionBox_right.GetHeldItem() == heldItem) {
-          optionBox_right.RemoveItem();
-        }
         heldItem = nullptr;
       } else if (leftInput->GetHeldItem() == heldItem) {
         leftInput->RemoveItem();
       }
       if (rightInput->IsItemTouching(heldItem) &&
-          !rightInput->IsHoldingItem()) {
+          !rightInput->IsHoldingItem() && isInput) {
         rightInput->SnapItemInBox(heldItem);
-        if (optionBox_left.GetHeldItem() == heldItem) {
-          optionBox_left.RemoveItem();
-        }
-        if (optionBox_center.GetHeldItem() == heldItem) {
-          optionBox_center.RemoveItem();
-        }
-        if (optionBox_right.GetHeldItem() == heldItem) {
-          optionBox_right.RemoveItem();
-        }
         heldItem = nullptr;
       } else if (rightInput->GetHeldItem() == heldItem) {
         rightInput->RemoveItem();
@@ -127,8 +112,26 @@ int main() {
       // Delete the input items once the output has been picked up.
       if (heldItem == outputItem && leftInput->IsHoldingItem() &&
           rightInput->IsHoldingItem()) {
+        if (optionBox_left.GetHeldItem() == leftInput->GetHeldItem()) {
+          optionBox_left.RemoveItem();
+        }
+        if (optionBox_center.GetHeldItem() == leftInput->GetHeldItem()) {
+          optionBox_center.RemoveItem();
+        }
+        if (optionBox_right.GetHeldItem() == leftInput->GetHeldItem()) {
+          optionBox_right.RemoveItem();
+        }
         DestroyItem(leftInput->GetHeldItem());
         leftInput->RemoveItem();
+        if (optionBox_left.GetHeldItem() == rightInput->GetHeldItem()) {
+          optionBox_left.RemoveItem();
+        }
+        if (optionBox_center.GetHeldItem() == rightInput->GetHeldItem()) {
+          optionBox_center.RemoveItem();
+        }
+        if (optionBox_right.GetHeldItem() == rightInput->GetHeldItem()) {
+          optionBox_right.RemoveItem();
+        }
         DestroyItem(rightInput->GetHeldItem());
         rightInput->RemoveItem();
 
@@ -138,9 +141,10 @@ int main() {
         timeSinceLastScore = prevScoreTime - timer;
         prevScoreTime = timer;
 
-        std::cout << "Score: " << score << " Time Since: " << timeSinceLastScore
+        /*std::cout << "Score: " << score << " Time Since: " <<
+           timeSinceLastScore
                   << " Prev Time: " << prevScoreTime
-                  << " Multiplier: " << multiplier << std::endl;
+                  << " Multiplier: " << multiplier << std::endl;*/
       }
     }
 
@@ -159,6 +163,9 @@ int main() {
     ClearBackground(RAYWHITE);
     if (timer >= 0) {
       DrawText(TextFormat("Score: %04i", score), 10, 10, 40, BLACK);
+      if (multiplier > 1.0) {
+        DrawText(TextFormat("Bonus: x%4.2f", multiplier), 10, 220, 20, BLACK);
+      }
 
       DrawText(TextFormat("%02i:%02i",
                           timer / RenderConstants::kTargetFPS /

@@ -36,7 +36,7 @@ void OptionBox::SpawnItemInBox() {
   std::uniform_int_distribution<int> dist(
       0, static_cast<int>(ItemFactory::inputs.size()) - 1);
 
-  std::cout << dist(rd) << std::endl;
+  // std::cout << dist(rd) << std::endl;
 
   auto item = ItemFactory::CreateItemFromTypePos(
       ItemFactory::inputs.at(dist(rd)),

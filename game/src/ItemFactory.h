@@ -7,6 +7,7 @@
 
 #include "Item.h"
 
+// Should never intake Item objects, only take in ItemType.
 namespace ItemFactory {
 const inline std::map<ItemType, std::string> names{
     {ItemType::NONE, "None"},
@@ -28,4 +29,8 @@ const inline std::map<ItemType, std::string> textureFiles{
 std::shared_ptr<Item> CreateItemFromType(ItemType type);
 
 std::shared_ptr<Item> CreateItemFromTypePos(ItemType type, float x, float y);
+
+bool IsOutputType(ItemType type);
+
+bool IsInputType(ItemType type);
 };  // namespace ItemFactory
