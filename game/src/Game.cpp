@@ -41,6 +41,8 @@ int main() {
     TextureManager::UpdateItemTextures(item);
   }
 
+  ResetCameraPosition();
+
   // Main Game Loop
   while (!WindowShouldClose()) {
     mousePos = GetMousePosition();
@@ -140,6 +142,7 @@ int main() {
         score += static_cast<int>(GetMultiplier());
         timeSinceLastScore = prevScoreTime - timer;
         prevScoreTime = timer;
+        multipliedScores++;
 
         /*std::cout << "Score: " << score << " Time Since: " <<
            timeSinceLastScore
@@ -161,6 +164,7 @@ int main() {
     BeginDrawing();
 
     ClearBackground(RAYWHITE);
+    BeginMode2D(camera);
     if (timer >= 0) {
       DrawText(TextFormat("Score: %04i", score), 10, 10, 40, BLACK);
       if (multiplier > 1.0) {
@@ -277,12 +281,24 @@ void RegenerateInputItems() {
 }
 
 float GetMultiplier() {
-  if (timeSinceLastScore < GameConstants::kMultiplierTime) {
+  if (timeSinceLastScore < multiplierTime) {
     multiplier += GameConstants::kMultiplierGrowthRate;
-    if (multiplierTime > 15) multiplierTime -= 15;
+    if (multiplierTime > GameConstants::kMinMultiplierTime)
+      multiplierTime = GameConstants::kMultiplierTime / multipliedScores +
+                       GameConstants::kMinMultiplierTime;
   } else {
     multiplier = 1.0f;
     multiplierTime = GameConstants::kMultiplierTime;
+    multipliedScores = 0;
   }
   return multiplier;
+}
+
+void ResetCameraPosition() {
+  camera.offset = Vector2{RenderConstants::kScreenWidth / 2.0f,
+                          RenderConstants::kScreenHeight / 2.0f};
+  camera.target = Vector2{RenderConstants::kScreenWidth / 2.0f,
+                          RenderConstants::kScreenHeight / 2.0f};
+  camera.rotation = 0.f;
+  camera.zoom = 1.0f;
 }

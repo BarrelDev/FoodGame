@@ -14,6 +14,7 @@ namespace GameConstants {
 constexpr int kTotalFrames = 3000;
 constexpr int kSecondsPerMinute = 60;
 constexpr int kMultiplierTime = RenderConstants::kTargetFPS * 5;
+constexpr int kMinMultiplierTime = 15;
 constexpr float kMultiplierGrowthRate = 0.5f;
 
 constexpr int testMinute =

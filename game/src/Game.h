@@ -44,6 +44,8 @@ Rectangle optionOne;
 Rectangle optionTwo;
 Rectangle optionThree;
 
+Camera2D camera;
+
 // Store mouse position
 Vector2 mousePos;
 
@@ -58,6 +60,7 @@ bool isLeftClicking;
 bool isRightClicking;
 
 static int score = 0;
+static int multipliedScores = 0;
 
 static int timeSinceLastScore = GameConstants::kTotalFrames;
 
@@ -92,3 +95,5 @@ bool AddItem(std::shared_ptr<Item> item);
 void RegenerateInputItems();
 
 float GetMultiplier();
+
+void ResetCameraPosition();
