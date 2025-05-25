@@ -45,6 +45,7 @@ Rectangle optionTwo;
 Rectangle optionThree;
 
 Camera2D camera;
+Camera2D baseCamera;
 
 // Store mouse position
 Vector2 mousePos;
@@ -61,6 +62,8 @@ bool isRightClicking;
 
 static int score = 0;
 static int multipliedScores = 0;
+
+static float trauma = 0;
 
 static int timeSinceLastScore = GameConstants::kTotalFrames;
 

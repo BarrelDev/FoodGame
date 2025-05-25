@@ -3,9 +3,12 @@
 #include <raylib.h>
 
 #include <__msvc_ostream.hpp>
+#include <cmath>
 #include <iostream>
 #include <memory>
+#include <random>
 #include <string>
+#include <utility>
 
 #include "Constants.h"
 #include "Item.h"
@@ -20,6 +23,13 @@ int main() {
              "raylib test");
 
   SetTargetFPS(RenderConstants::kTargetFPS);
+
+  baseCamera.offset = Vector2{RenderConstants::kScreenWidth / 2.0f,
+                              RenderConstants::kScreenHeight / 2.0f};
+  baseCamera.target = Vector2{RenderConstants::kScreenWidth / 2.0f,
+                              RenderConstants::kScreenHeight / 2.0f};
+  baseCamera.rotation = 0.f;
+  baseCamera.zoom = 1.0f;
 
   do {
     optionBox_left.SpawnItemInBox();
@@ -42,6 +52,11 @@ int main() {
   }
 
   ResetCameraPosition();
+
+  // Initialize Random Engine & Distribution
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_real_distribution<> dis(-1.0, 1.0);
 
   // Main Game Loop
   while (!WindowShouldClose()) {
@@ -160,6 +175,18 @@ int main() {
       RegenerateInputItems();
     }
 
+    // Apply Camera Shake
+    float shakeAngle =
+        RenderConstants::kMaxShakeAngle * std::powf(trauma, 2) * dis(gen);
+    float shakeX =
+        RenderConstants::kMaxShakeOffset * std::powf(trauma, 2) * dis(gen);
+    float shakeY =
+        RenderConstants::kMaxShakeOffset * std::powf(trauma, 2) * dis(gen);
+
+    camera.rotation = baseCamera.rotation + shakeAngle;
+    camera.target =
+        Vector2{baseCamera.target.x + shakeX, baseCamera.target.y + shakeY};
+
     // Render Frame
     BeginDrawing();
 
@@ -224,6 +251,8 @@ int main() {
     EndDrawing();
 
     timer--;
+    trauma -= 0.01f;
+    trauma = std::max(0.f, trauma);
   }
 
   // Unload Textures
@@ -283,6 +312,8 @@ void RegenerateInputItems() {
 float GetMultiplier() {
   if (timeSinceLastScore < multiplierTime) {
     multiplier += GameConstants::kMultiplierGrowthRate;
+    trauma += 0.2f;
+    trauma = std::min(trauma, 1.0f);
     if (multiplierTime > GameConstants::kMinMultiplierTime)
       multiplierTime = GameConstants::kMultiplierTime / multipliedScores +
                        GameConstants::kMinMultiplierTime;
@@ -295,10 +326,8 @@ float GetMultiplier() {
 }
 
 void ResetCameraPosition() {
-  camera.offset = Vector2{RenderConstants::kScreenWidth / 2.0f,
-                          RenderConstants::kScreenHeight / 2.0f};
-  camera.target = Vector2{RenderConstants::kScreenWidth / 2.0f,
-                          RenderConstants::kScreenHeight / 2.0f};
-  camera.rotation = 0.f;
-  camera.zoom = 1.0f;
+  camera.offset = baseCamera.offset;
+  camera.target = baseCamera.target;
+  camera.rotation = baseCamera.rotation;
+  camera.zoom = baseCamera.zoom;
 }

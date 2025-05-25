@@ -8,6 +8,9 @@ constexpr int kTargetFPS = 30;
 
 constexpr int kTextOffsetY = 50;
 constexpr int kTextOffsetX = -20;
+
+constexpr float kMaxShakeAngle = 30.f;  // in degrees
+constexpr float kMaxShakeOffset = 50.f;
 }  // namespace RenderConstants
 
 namespace GameConstants {
