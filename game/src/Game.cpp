@@ -74,10 +74,14 @@ int main() {
       for (int i = 0; i < items.size(); ++i) {
         std::shared_ptr<Item> item = items[i];
 
-        itemPos = Vector2{item->GetPosition().x - item->GetWidth() / 2.0f,
-                          item->GetPosition().y - item->GetHeight() / 2.0f};
-        itemEdge = Vector2{item->GetPosition().x + item->GetWidth() / 2.0f,
-                           item->GetPosition().y + item->GetHeight() / 2.0f};
+        itemPos = Vector2{item->GetPosition().x - item->GetWidth() / 2.0f -
+                              GameConstants::kHitboxForgiveness,
+                          item->GetPosition().y - item->GetHeight() / 2.0f -
+                              GameConstants::kHitboxForgiveness};
+        itemEdge = Vector2{item->GetPosition().x + item->GetWidth() / 2.0f +
+                               GameConstants::kHitboxForgiveness,
+                           item->GetPosition().y + item->GetHeight() / 2.0f +
+                               GameConstants::kHitboxForgiveness};
         if (mousePos.x >= itemPos.x && mousePos.x <= itemEdge.x &&
             mousePos.y >= itemPos.y && mousePos.y <= itemEdge.y) {
           isHolding = true;
@@ -168,8 +172,7 @@ int main() {
 
     if (holdingOutput && !isHolding) {
       holdingOutput = false;
-
-      DestroyItem(heldItem);
+      if (ItemFactory::IsOutputType(heldItem->GetType())) DestroyItem(heldItem);
       DestroyItem(outputBox.GetHeldItem());
       outputBox.RemoveItem();
       RegenerateInputItems();
