@@ -8,6 +8,7 @@
 #include "Item.h"
 #include "OptionBox.h"
 #include "OutputBox.h"
+#include "ParticleSystem.h"
 #include "raylib.h"
 
 // Store ball shape position
@@ -49,6 +50,9 @@ Camera2D baseCamera;
 
 // Store mouse position
 Vector2 mousePos;
+
+// Particles
+std::vector<ParticleSystem> pSystems{};
 
 bool isHolding;
 bool holdingOutput;

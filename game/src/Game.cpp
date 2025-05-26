@@ -1,5 +1,6 @@
 #include "Game.h"
 
+#include <ParticleSystem.h>
 #include <raylib.h>
 
 #include <__msvc_ostream.hpp>
@@ -9,6 +10,7 @@
 #include <random>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "Constants.h"
 #include "Item.h"
@@ -30,6 +32,8 @@ int main() {
                               RenderConstants::kScreenHeight / 2.0f};
   baseCamera.rotation = 0.f;
   baseCamera.zoom = 1.0f;
+
+  pSystems.reserve(10);
 
   do {
     optionBox_left.SpawnItemInBox();
@@ -182,10 +186,13 @@ int main() {
 
     if (holdingOutput && !isHolding) {
       holdingOutput = false;
+      pSystems.emplace_back(heldItem->GetPosition());
       if (ItemFactory::IsOutputType(heldItem->GetType())) DestroyItem(heldItem);
       DestroyItem(outputBox.GetHeldItem());
       outputBox.RemoveItem();
       RegenerateInputItems();
+
+      heldItem = nullptr;
     }
 
     // Apply Camera Shake
@@ -254,6 +261,16 @@ int main() {
                  (int)item->GetPosition().y + RenderConstants::kTextOffsetY, 20,
                  BLACK);
       }
+
+      // Draw Particles
+
+      pSystems.erase(std::remove_if(pSystems.begin(), pSystems.end(),
+                                    [](ParticleSystem& sys) {
+                                      sys.Update();
+                                      sys.Draw();
+                                      return sys.system.size() <= 0;
+                                    }),
+                     pSystems.end());
     } else {
       DrawText(TextFormat("Score: %04i", score), 10, 10, 40, BLACK);
 
