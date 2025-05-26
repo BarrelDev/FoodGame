@@ -1,5 +1,11 @@
 #include "InputBox.h"
 
+#include <raylib.h>
+
+#include <memory>
+
+#include "Item.h"
+
 InputBox::InputBox(float x, float y)
     : m_position{x, y},
       m_box{x, y, BoxConstants::kWidth, BoxConstants::kHeight},
@@ -12,8 +18,11 @@ bool InputBox::IsItemTouching(std::shared_ptr<Item> item) {
   Vector2 center{item->GetCenter()};
   Rectangle rect{item->GetRect()};
 
-  if (CheckCollisionRecs(m_box, {position.x - center.x, position.y - center.y,
-                                 rect.width, rect.height})) {
+  if (CheckCollisionRecs(
+          m_box, {position.x - center.x - BoxConstants::kHitBoxForgiveness,
+                  position.y - center.y - BoxConstants::kHitBoxForgiveness,
+                  rect.width + BoxConstants::kHitBoxForgiveness,
+                  rect.height + BoxConstants::kHitBoxForgiveness})) {
     return true;
   }
   return false;

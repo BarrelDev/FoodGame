@@ -63,7 +63,10 @@ bool isRightClicking;
 static int score = 0;
 static int multipliedScores = 0;
 
-static float trauma = 0;
+static float trauma = 0.f;
+
+static int coyoteTime = GameConstants::kCoyoteTime;
+static bool coyoteActive = false;
 
 static int timeSinceLastScore = GameConstants::kTotalFrames;
 

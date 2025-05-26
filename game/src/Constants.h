@@ -19,7 +19,8 @@ constexpr int kSecondsPerMinute = 60;
 constexpr int kMultiplierTime = RenderConstants::kTargetFPS * 5;
 constexpr int kMinMultiplierTime = 15;
 constexpr float kMultiplierGrowthRate = 0.5f;
-constexpr float kHitboxForgiveness = 15.f;
+constexpr float kHitboxForgiveness = 20.f;
+constexpr int kCoyoteTime = 1;
 
 constexpr int testMinute =
     kTotalFrames / RenderConstants::kTargetFPS / kSecondsPerMinute;

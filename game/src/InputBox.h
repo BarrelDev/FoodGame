@@ -8,6 +8,7 @@
 namespace BoxConstants {
 constexpr int kWidth = 150;
 constexpr int kHeight = 100;
+constexpr int kHitBoxForgiveness = 20;
 }  // namespace BoxConstants
 
 class InputBox {

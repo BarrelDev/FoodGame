@@ -56,7 +56,7 @@ int main() {
   // Initialize Random Engine & Distribution
   std::random_device rd;
   std::mt19937 gen(rd());
-  std::uniform_real_distribution<> dis(-1.0, 1.0);
+  std::uniform_real_distribution<float> dis(-1.0, 1.0);
 
   // Main Game Loop
   while (!WindowShouldClose()) {
@@ -89,7 +89,17 @@ int main() {
         }
       }
     } else {
-      isHolding = false;
+      if (isHolding) coyoteActive = true;
+    }
+
+    if (coyoteActive) {
+      if (coyoteTime > 0)
+        coyoteTime--;
+      else {
+        coyoteTime = GameConstants::kCoyoteTime;
+        coyoteActive = false;
+        isHolding = false;
+      }
     }
 
     // Move heldItem to mouse position if left mouse button held
@@ -180,11 +190,11 @@ int main() {
 
     // Apply Camera Shake
     float shakeAngle =
-        RenderConstants::kMaxShakeAngle * std::powf(trauma, 2) * dis(gen);
+        RenderConstants::kMaxShakeAngle * std::powf(trauma, 2.f) * dis(gen);
     float shakeX =
-        RenderConstants::kMaxShakeOffset * std::powf(trauma, 2) * dis(gen);
+        RenderConstants::kMaxShakeOffset * std::powf(trauma, 2.f) * dis(gen);
     float shakeY =
-        RenderConstants::kMaxShakeOffset * std::powf(trauma, 2) * dis(gen);
+        RenderConstants::kMaxShakeOffset * std::powf(trauma, 2.f) * dis(gen);
 
     camera.rotation = baseCamera.rotation + shakeAngle;
     camera.target =
@@ -252,6 +262,8 @@ int main() {
       DrawText("GAME OVER", 190, 200, 20, BLACK);
     }
     EndDrawing();
+
+    // End of Frame countdown
 
     timer--;
     trauma -= 0.01f;
