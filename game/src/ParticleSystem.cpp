@@ -12,6 +12,8 @@ constexpr float kTopYOffset = 1.f / (1.7320508076f * 2.f);
 constexpr float kBottomYOffset = 1.f / 1.7320508076f;
 constexpr float kXOffset = 0.5f;
 constexpr float kYAccel = 1.f;
+
+constexpr float kHeight = 1.7320508076f / 2.0f;
 };  // namespace ParticleConstants
 
 Vector2 operator+(Vector2 const &v1, Vector2 const &v2) {
@@ -44,13 +46,23 @@ Particle::Particle(Vector2 pos) : position{pos} {
   acceleration = Vector2{0.f, ParticleConstants::kYAccel};
 }
 
+Particle::Particle(Vector2 pos, float s) : position{pos}, size{s} {
+  velocity = Vector2{vxDis(pGen), vyDis(pGen)};
+  acceleration = Vector2{0.f, ParticleConstants::kYAccel};
+}
+
 void Particle::Draw() const {
-  DrawTriangle(
-      position + size * Vector2{-ParticleConstants::kXOffset,
-                                ParticleConstants::kTopYOffset},
-      position + size * Vector2{ParticleConstants::kTopYOffset,
-                                ParticleConstants::kXOffset},
-      position + size * Vector2{ParticleConstants::kBottomYOffset, 0.f}, RED);
+  float height = ParticleConstants::kHeight * size;
+
+  Vector2 A = {0.f, height / 3.0f * 2.0f};
+  Vector2 B = {size / 2.0f, -height / 3.f};
+  Vector2 C = {-size / 2.0f, -height / 3.f};
+
+  A = A + position;
+  B = B + position;
+  C = C + position;
+
+  DrawTriangle(A, B, C, RED);
 }
 
 void Particle::Update() {

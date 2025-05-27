@@ -214,7 +214,7 @@ int main() {
     BeginMode2D(camera);
     if (timer >= 0) {
       DrawText(TextFormat("Score: %04i", score), 10, 10, 40, BLACK);
-      if (multiplier > 1.0) {
+      if (multiplier > 1.1) {
         DrawText(TextFormat("Bonus: x%4.2f", multiplier), 10, 220, 20, BLACK);
       }
 

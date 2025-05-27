@@ -15,9 +15,7 @@ class Particle {
 
   Particle(Vector2 pos);
 
-  Particle(Vector2 pos, float size) : position(pos), size{this->size} {
-    Particle();
-  }
+  Particle(Vector2 pos, float s);
 
   void Draw() const;
 
