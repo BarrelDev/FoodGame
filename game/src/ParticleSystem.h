@@ -4,6 +4,11 @@
 
 #include <vector>
 
+struct ParticleInstanceData {
+  Vector2 position;
+  float size;
+};
+
 class Particle {
  public:
   Vector2 acceleration;
@@ -25,10 +30,13 @@ class Particle {
 class ParticleSystem {
  public:
   std::vector<Particle> system;
+  std::vector<ParticleInstanceData> instances;
 
   ParticleSystem(Vector2 pos) noexcept;
 
   void Draw() const;
 
   void Update();
+
+  Shader particleShader;
 };

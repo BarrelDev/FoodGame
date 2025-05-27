@@ -1,7 +1,11 @@
 #include "ParticleSystem.h"
 
 #include <raylib.h>
+#include <raymath.h>
+#include <rlgl.h>
 
+#include <__msvc_ostream.hpp>
+#include <iostream>
 #include <memory>
 #include <random>
 #include <vector>
@@ -14,6 +18,11 @@ constexpr float kXOffset = 0.5f;
 constexpr float kYAccel = 1.f;
 
 constexpr float kHeight = 1.7320508076f / 2.0f;
+constexpr float triangleVerts[] = {
+    0.0f,  -1.7320508076f / 3.0f,  // Top vertex
+    -0.5f, 1.7320508076f / 6.0f,   // Bottom left
+    0.5f,  1.7320508076f / 6.0f    // Bottom right
+};
 };  // namespace ParticleConstants
 
 Vector2 operator+(Vector2 const &v1, Vector2 const &v2) {
@@ -35,6 +44,15 @@ std::uniform_real_distribution<float> yDis(-20.f, 50.f);
 std::uniform_real_distribution<float> vxDis(-5.f, 5.f);
 std::uniform_real_distribution<float> vyDis(-5.f, 5.f);
 std::uniform_int_distribution<int> dis(0, 100);
+// Image particleData = GenImageColor(ParticleConstants::kMaxParticles, 1,
+//                                    BLANK);  // use pixels to store pos, size
+// Texture2D particleTex = LoadTextureFromImage(particleData);
+
+// Create triangle mesh (once)
+unsigned int triangleVBO;
+
+// Create instance buffer
+unsigned int instanceVBO;
 
 Particle::Particle() {
   velocity = Vector2{vxDis(pGen), vyDis(pGen)};
@@ -74,30 +92,80 @@ void Particle::Update() {
 }
 
 ParticleSystem::ParticleSystem(Vector2 pos) noexcept {
+  triangleVBO =
+      rlLoadVertexBuffer(ParticleConstants::triangleVerts,
+                         sizeof(ParticleConstants::triangleVerts), false);
+  instanceVBO = rlLoadVertexBuffer(
+      nullptr, ParticleConstants::kMaxParticles * sizeof(ParticleInstanceData),
+      true);
   system.reserve(ParticleConstants::kMaxParticles);
   for (int i = 0; i < ParticleConstants::kMaxParticles; i++) {
     system.emplace_back(pos + Vector2{xDis(pGen), yDis(pGen)});
   }
+
+  particleShader = LoadShader("/shader/particle.vs", "/shader/particle.fs");
 }
 
 void ParticleSystem::Draw() const {
-  for (const auto &p : system) {
+  rlUpdateVertexBuffer(instanceVBO, instances.data(),
+                       instances.size() * sizeof(ParticleInstanceData), 0);
+  Matrix proj = MatrixOrtho(0.0f, (float)GetScreenWidth(),
+                            (float)GetScreenHeight(), 0.0f, 0.0f, 1.0f);
+  SetShaderValueMatrix(particleShader,
+                       GetShaderLocation(particleShader, "projection"), proj);
+
+  BeginShaderMode(particleShader);
+
+  // Bind VBOs
+  // rlEnableVertexArray(0);  // You may need to create a VAO
+  rlDisableVertexArray();  // Unbinds any VAO
+  rlDisableDepthTest();
+
+  rlEnableVertexBuffer(triangleVBO);
+
+  // Set up vertex attribute 0 (triangle verts)
+  rlSetVertexAttribute(0, 2, RL_FLOAT, false, 2 * sizeof(float), 0);
+  rlEnableVertexAttribute(0);
+
+  rlEnableVertexBuffer(instanceVBO);
+  // Set up vertex attribute 1 (position) and 2 (size)
+
+  rlSetVertexAttribute(1, 2, RL_FLOAT, false, sizeof(ParticleInstanceData), 0);
+  rlEnableVertexAttribute(1);
+  rlSetVertexAttributeDivisor(1, 1);
+
+  rlSetVertexAttribute(2, 1, RL_FLOAT, false, sizeof(ParticleInstanceData),
+                       sizeof(Vector2));
+  rlEnableVertexAttribute(2);
+  rlSetVertexAttributeDivisor(2, 1);
+
+  // Draw instanced
+  std::cout << "Instances Size: " << instances.size() << std::endl;
+  rlDrawVertexArrayInstanced(0, 3, instances.size());
+
+  EndShaderMode();
+
+  /*for (const auto &p : system) {
     if (p.position.x < 0 || p.position.x > GetScreenWidth() ||
         p.position.y < 0 || p.position.y > GetScreenHeight()) {
       continue;
     }
     p.Draw();
-  }
+  }*/
 }
 
 void ParticleSystem::Update() {
+  instances.clear();
   system.erase(std::remove_if(system.begin(), system.end(),
-                              [](auto &p) {
+                              [&](auto &p) {
                                 p.Update();
-                                return p.size <= 0.f || p.position.x < 0 ||
-                                       p.position.x > GetScreenWidth() ||
-                                       p.position.y < 0 ||
-                                       p.position.y > GetScreenHeight();
+                                if (p.size <= 0.f || p.position.x < 0 ||
+                                    p.position.x > GetScreenWidth() ||
+                                    p.position.y < 0 ||
+                                    p.position.y > GetScreenHeight())
+                                  return true;
+                                instances.push_back({p.position, p.size});
+                                return false;
                                 ;
                               }),
                system.end());
