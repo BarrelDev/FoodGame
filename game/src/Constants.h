@@ -11,6 +11,8 @@ constexpr int kTextOffsetX = -20;
 
 constexpr float kMaxShakeAngle = 30.f;  // in degrees
 constexpr float kMaxShakeOffset = 50.f;
+
+constexpr int kMinBonusTextSize = 15;
 }  // namespace RenderConstants
 
 namespace GameConstants {

@@ -71,6 +71,8 @@ int main() {
     else if (IsMouseButtonReleased(0))
       isLeftClicking = false;
 
+    if (IsKeyPressed(KEY_L)) timer = -1;
+
     // Check if item is in range of being held by mouse cursor.
     if (isLeftClicking) {
       Vector2 itemPos;
@@ -79,11 +81,11 @@ int main() {
         std::shared_ptr<Item> item = items[i];
 
         itemPos = Vector2{item->GetPosition().x - item->GetWidth() / 2.0f -
-                              GameConstants::kHitboxForgiveness,
+                              GameConstants::kHitboxForgiveness * 2.0f,
                           item->GetPosition().y - item->GetHeight() / 2.0f -
                               GameConstants::kHitboxForgiveness};
         itemEdge = Vector2{item->GetPosition().x + item->GetWidth() / 2.0f +
-                               GameConstants::kHitboxForgiveness,
+                               GameConstants::kHitboxForgiveness * 2.0f,
                            item->GetPosition().y + item->GetHeight() / 2.0f +
                                GameConstants::kHitboxForgiveness};
         if (mousePos.x >= itemPos.x && mousePos.x <= itemEdge.x &&
@@ -215,7 +217,8 @@ int main() {
     if (timer >= 0) {
       DrawText(TextFormat("Score: %04i", score), 10, 10, 40, BLACK);
       if (multiplier > 1.1) {
-        DrawText(TextFormat("Bonus: x%4.2f", multiplier), 10, 220, 20, BLACK);
+        DrawText(TextFormat("Bonus: x%4.2f", multiplier), 10, 220,
+                 20 * multiplier, BLACK);
       }
 
       DrawText(TextFormat("%02i:%02i",
@@ -276,7 +279,11 @@ int main() {
 
       DrawText(TextFormat("%02i:%02i", 0, 0),
                RenderConstants::kScreenWidth - 110, 10, 40, BLACK);
-      DrawText("GAME OVER", 190, 200, 20, BLACK);
+      DrawText("GAME OVER", 250, 175, 50, BLACK);
+      if (CheckCollisionPointRec(mousePos, replayButton))
+        DrawText("REPLAY", 350, 220, 25, GRAY);
+      else
+        DrawText("REPLAY", 350, 220, 25, BLACK);
     }
     EndDrawing();
 
@@ -285,6 +292,12 @@ int main() {
     timer--;
     trauma -= 0.01f;
     trauma = std::max(0.f, trauma);
+
+    if (CheckCollisionPointRec(mousePos, replayButton) && timer < 0) {
+      if (isLeftClicking) {
+        RestartGame();
+      }
+    }
   }
 
   // Unload Textures
@@ -336,9 +349,21 @@ void RegenerateInputItems() {
                                      optionBox_center.GetHeldItem()->GetType(),
                                      optionBox_right.GetHeldItem()->GetType()));
 
-  if (leftHas) AddItem(optionBox_left.GetHeldItem());
-  if (rightHas) AddItem(optionBox_right.GetHeldItem());
-  if (centerHas) AddItem(optionBox_center.GetHeldItem());
+  if (leftHas) {
+    AddItem(optionBox_left.GetHeldItem());
+    pSystems.emplace_back(optionBox_left.GetHeldItem()->GetPosition(), 15.f,
+                          YELLOW);
+  }
+  if (rightHas) {
+    AddItem(optionBox_right.GetHeldItem());
+    pSystems.emplace_back(optionBox_right.GetHeldItem()->GetPosition(), 15.f,
+                          YELLOW);
+  }
+  if (centerHas) {
+    AddItem(optionBox_center.GetHeldItem());
+    pSystems.emplace_back(optionBox_center.GetHeldItem()->GetPosition(), 15.f,
+                          YELLOW);
+  }
 }
 
 float GetMultiplier() {
@@ -362,4 +387,47 @@ void ResetCameraPosition() {
   camera.target = baseCamera.target;
   camera.rotation = baseCamera.rotation;
   camera.zoom = baseCamera.zoom;
+}
+
+void RestartGame() {
+  optionBox_center.RemoveItem();
+  optionBox_left.RemoveItem();
+  optionBox_right.RemoveItem();
+
+  leftInput->RemoveItem();
+  rightInput->RemoveItem();
+
+  items.clear();
+
+  do {
+    optionBox_left.SpawnItemInBox();
+    optionBox_center.SpawnItemInBox();
+    optionBox_right.SpawnItemInBox();
+  } while (!IsValidOptionCombination(optionBox_left.GetHeldItem()->GetType(),
+                                     optionBox_center.GetHeldItem()->GetType(),
+                                     optionBox_right.GetHeldItem()->GetType()));
+
+  AddItem(optionBox_left.GetHeldItem());
+  AddItem(optionBox_center.GetHeldItem());
+  AddItem(optionBox_right.GetHeldItem());
+
+  score = 0;
+  multipliedScores = 0;
+
+  trauma = 0.f;
+
+  coyoteTime = GameConstants::kCoyoteTime;
+  coyoteActive = false;
+
+  timeSinceLastScore = GameConstants::kTotalFrames;
+
+  prevScoreTime = GameConstants::kTotalFrames;
+
+  timer = GameConstants::kTotalFrames;
+
+  multiplier = 1.0f;
+
+  multiplierTime = GameConstants::kMultiplierTime;
+
+  ResetCameraPosition();
 }

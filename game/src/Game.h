@@ -45,6 +45,8 @@ Rectangle optionOne;
 Rectangle optionTwo;
 Rectangle optionThree;
 
+Rectangle replayButton{350, 220, 100, 25};
+
 Camera2D camera;
 Camera2D baseCamera;
 
@@ -107,3 +109,5 @@ void RegenerateInputItems();
 float GetMultiplier();
 
 void ResetCameraPosition();
+
+void RestartGame();

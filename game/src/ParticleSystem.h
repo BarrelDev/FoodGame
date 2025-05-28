@@ -10,12 +10,13 @@ class Particle {
   Vector2 position{0.f};
   Vector2 velocity{0.f};
   float size{25.f};
+  Color color{RED};
 
   Particle();
 
   Particle(Vector2 pos);
 
-  Particle(Vector2 pos, float s);
+  Particle(Vector2 pos, float s, Color c);
 
   void Draw() const;
 
@@ -27,6 +28,8 @@ class ParticleSystem {
   std::vector<Particle> system;
 
   ParticleSystem(Vector2 pos) noexcept;
+
+  ParticleSystem(Vector2 pos, float s, Color c) noexcept;
 
   void Draw() const;
 

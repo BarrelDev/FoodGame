@@ -30,10 +30,10 @@ Vector2 operator*(Vector2 const &v, float const &d) {
 
 std::random_device pRd;
 std::mt19937 pGen(pRd());
-std::uniform_real_distribution<float> xDis(-20.f, 20.f);
-std::uniform_real_distribution<float> yDis(-20.f, 50.f);
-std::uniform_real_distribution<float> vxDis(-5.f, 5.f);
-std::uniform_real_distribution<float> vyDis(-5.f, 5.f);
+std::uniform_real_distribution<float> xDis(-10.f, 10.f);
+std::uniform_real_distribution<float> yDis(-10.f, 25.f);
+std::uniform_real_distribution<float> vxDis(-10.f, 10.f);
+std::uniform_real_distribution<float> vyDis(-10.f, 5.f);
 std::uniform_int_distribution<int> dis(0, 100);
 
 Particle::Particle() {
@@ -46,7 +46,8 @@ Particle::Particle(Vector2 pos) : position{pos} {
   acceleration = Vector2{0.f, ParticleConstants::kYAccel};
 }
 
-Particle::Particle(Vector2 pos, float s) : position{pos}, size{s} {
+Particle::Particle(Vector2 pos, float s, Color c)
+    : position{pos}, size{s}, color{c} {
   velocity = Vector2{vxDis(pGen), vyDis(pGen)};
   acceleration = Vector2{0.f, ParticleConstants::kYAccel};
 }
@@ -62,7 +63,7 @@ void Particle::Draw() const {
   B = B + position;
   C = C + position;
 
-  DrawTriangle(A, B, C, RED);
+  DrawTriangle(A, B, C, color);
 }
 
 void Particle::Update() {
@@ -77,6 +78,13 @@ ParticleSystem::ParticleSystem(Vector2 pos) noexcept {
   system.reserve(ParticleConstants::kMaxParticles);
   for (int i = 0; i < ParticleConstants::kMaxParticles; i++) {
     system.emplace_back(pos + Vector2{xDis(pGen), yDis(pGen)});
+  }
+}
+
+ParticleSystem::ParticleSystem(Vector2 pos, float size, Color color) noexcept {
+  system.reserve(ParticleConstants::kMaxParticles);
+  for (int i = 0; i < ParticleConstants::kMaxParticles; i++) {
+    system.emplace_back(pos + Vector2{xDis(pGen), yDis(pGen)}, size, color);
   }
 }
 
