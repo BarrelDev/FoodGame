@@ -17,6 +17,7 @@
 #include "ItemFactory.h"
 #include "OutputBox.h"
 #include "TextureManager.h"
+#include "Scale.h"
 
 int main() {
   std::cout << "starting" << std::endl;
@@ -64,7 +65,7 @@ int main() {
 
   // Main Game Loop
   while (!WindowShouldClose()) {
-    mousePos = GetMousePosition();
+    mousePos = Unscale(GetMousePosition());
     // Check if mouse button held
     if (IsMouseButtonDown(0))
       isLeftClicking = true;
@@ -81,13 +82,13 @@ int main() {
         std::shared_ptr<Item> item = items[i];
 
         itemPos = Vector2{item->GetPosition().x - item->GetWidth() / 2.0f -
-                              GameConstants::kHitboxForgiveness * 2.0f,
+                              Si(GameConstants::kHitboxForgiveness) * 2.0f,
                           item->GetPosition().y - item->GetHeight() / 2.0f -
-                              GameConstants::kHitboxForgiveness};
+                              Si(GameConstants::kHitboxForgiveness)};
         itemEdge = Vector2{item->GetPosition().x + item->GetWidth() / 2.0f +
-                               GameConstants::kHitboxForgiveness * 2.0f,
+                               Si(GameConstants::kHitboxForgiveness) * 2.0f,
                            item->GetPosition().y + item->GetHeight() / 2.0f +
-                               GameConstants::kHitboxForgiveness};
+                               Si(GameConstants::kHitboxForgiveness)};
         if (mousePos.x >= itemPos.x && mousePos.x <= itemEdge.x &&
             mousePos.y >= itemPos.y && mousePos.y <= itemEdge.y) {
           isHolding = true;
@@ -215,10 +216,14 @@ int main() {
     ClearBackground(RAYWHITE);
     BeginMode2D(camera);
     if (timer >= 0) {
-      DrawText(TextFormat("Score: %04i", score), 10, 10, 40, BLACK);
+      int scoreFont = Si(40);
+      int bonusFont = Si(20 * multiplier);
+      DrawText(TextFormat("Score: %04i", score), ScaleX(10), ScaleX(10),
+               scoreFont,
+               BLACK);
       if (multiplier > 1.1) {
-        DrawText(TextFormat("Bonus: x%4.2f", multiplier), 10, 220,
-                 20 * multiplier, BLACK);
+        DrawText(TextFormat("Bonus: x%4.2f", multiplier), ScaleX(10), ScaleY(220),
+                 bonusFont, BLACK);
       }
 
       DrawText(TextFormat("%02i:%02i",
@@ -226,42 +231,86 @@ int main() {
                               GameConstants::kSecondsPerMinute,
                           timer / RenderConstants::kTargetFPS %
                               GameConstants::kSecondsPerMinute),
-               RenderConstants::kScreenWidth - 110, 10, 40, BLACK);
+               ScaleX(RenderConstants::kInternalScreenWidth - 110), ScaleY(10), Si(40), BLACK);
 
-      DrawRectangleRec(leftInput->GetRect(), BLACK);
+      DrawRectangleRec(ScaleRect(leftInput->GetRect()), BLACK);
 
-      DrawRectangleRec(rightInput->GetRect(), BLACK);
+      DrawRectangleRec(ScaleRect(rightInput->GetRect()), BLACK);
 
-      DrawRectangleRec(outputBox.GetRect(), BLUE);
+      DrawRectangleRec(ScaleRect(outputBox.GetRect()), BLUE);
 
-      DrawRectangleRec(optionBox_left.GetRect(), RED);
+      DrawRectangleRec(ScaleRect(optionBox_left.GetRect()), RED);
 
-      DrawRectangleRec(optionBox_center.GetRect(), RED);
+      DrawRectangleRec(ScaleRect(optionBox_center.GetRect()), RED);
 
-      DrawRectangleRec(optionBox_right.GetRect(), RED);
+      DrawRectangleRec(ScaleRect(optionBox_right.GetRect()), RED);
 
-      DrawTexture(
+      /*DrawTexture(
           addIcon, static_cast<int>(RenderConstants::kScreenWidth / 3.65f),
           static_cast<int>(RenderConstants::kScreenHeight / 8.0f), WHITE);
 
       DrawTexture(
           equalIcon, static_cast<int>(RenderConstants::kScreenWidth / 1.7f),
-          static_cast<int>(RenderConstants::kScreenHeight / 8.0f), WHITE);
+          static_cast<int>(RenderConstants::kScreenHeight / 8.0f), WHITE);*/
 
-      DrawText("FOOD GAME", 190, 200, 20, BLACK);
+      // design-space positions (same as before)
+      const float addX = RenderConstants::kInternalScreenWidth / 3.65f;
+      const float addY = RenderConstants::kInternalScreenHeight / 7.4f;
+      const float eqX = RenderConstants::kInternalScreenWidth / 1.7f;
+      const float eqY = RenderConstants::kInternalScreenHeight / 7.4f;
+
+      // desired icon size in design coordinates (adjust if you want
+      // larger/smaller)
+      const float iconDesignSize = 64.f;
+
+      // Source rectangles use the full texture in texture pixels
+      Rectangle srcAdd = {0.f, 0.f, (float)addIcon.width,
+                          (float)addIcon.height};
+      Rectangle srcEqual = {0.f, 0.f, (float)equalIcon.width,
+                            (float)equalIcon.height};
+
+      // Destination rectangles are expressed in design coords and then scaled
+      // to screen coords
+      Rectangle destAddDesign = {addX + iconDesignSize * 0.5f,
+                                 addY + iconDesignSize * 0.5f, iconDesignSize,
+                                 iconDesignSize};
+      Rectangle destEqualDesign = {eqX + iconDesignSize * 0.5f,
+                                   eqY + iconDesignSize * 0.5f, iconDesignSize,
+                                   iconDesignSize};
+
+      Rectangle destAddScaled = ScaleRect(destAddDesign);
+      Rectangle destEqualScaled = ScaleRect(destEqualDesign);
+
+      // Rotation origin is in destination (screen) pixels: use center of the
+      // scaled rect
+      Vector2 originAdd = {destAddScaled.width * 0.5f,
+                           destAddScaled.height * 0.5f};
+      Vector2 originEqual = {destEqualScaled.width * 0.5f,
+                             destEqualScaled.height * 0.5f};
+
+      DrawTexturePro(addIcon, srcAdd, destAddScaled, originAdd, 0.f, WHITE);
+      DrawTexturePro(equalIcon, srcEqual, destEqualScaled, originEqual, 0.f,
+                     WHITE);
+
+      DrawText("FOOD GAME", ScaleX(190), ScaleY(200), Si(20), BLACK);
 
       // Render loaded items.
 
       for (auto item : items) {
+        Rectangle dest =
+            Rectangle{item->GetPosition().x, item->GetPosition().y,
+                      item->GetRect().width, item->GetRect().height};
+        Vector2 centerScale = {ScaleX(item->GetCenter().x), ScaleY(item->GetCenter().y)};
         DrawTexturePro(TextureManager::GetTextureFromItemType(item->GetType()),
                        item->GetRect(),
-                       {item->GetPosition().x, item->GetPosition().y,
-                        item->GetRect().width, item->GetRect().height},
-                       item->GetCenter(), 0, WHITE);
+                       ScaleRect(dest),
+                       centerScale, 0, WHITE);
 
+        int fontSize = Si(20);
         DrawText(item->GetName().c_str(),
-                 (int)item->GetPosition().x + RenderConstants::kTextOffsetX,
-                 (int)item->GetPosition().y + RenderConstants::kTextOffsetY, 20,
+                 ScaleX((int)item->GetPosition().x + RenderConstants::kTextOffsetX),
+            ScaleY((int)item->GetPosition().y + RenderConstants::kTextOffsetY),
+            fontSize,
                  BLACK);
       }
 
@@ -275,15 +324,22 @@ int main() {
                                     }),
                      pSystems.end());
     } else {
-      DrawText(TextFormat("Score: %04i", score), 10, 10, 40, BLACK);
+      int scoreFont = Si(40);
+      DrawText(TextFormat("Score: %04i", score), ScaleX(10), ScaleY(10),
+               scoreFont,
+               BLACK);
 
       DrawText(TextFormat("%02i:%02i", 0, 0),
-               RenderConstants::kScreenWidth - 110, 10, 40, BLACK);
-      DrawText("GAME OVER", 250, 175, 50, BLACK);
+               RenderConstants::kScreenWidth - 110, ScaleY(10), scoreFont,
+               BLACK);
+
+      int overFont = Si(50);
+      int replayFont = Si(25);
+      DrawText("GAME OVER", ScaleX(250), ScaleY(175), overFont, BLACK);
       if (CheckCollisionPointRec(mousePos, replayButton))
-        DrawText("REPLAY", 350, 220, 25, GRAY);
+        DrawText("REPLAY", ScaleX(350), ScaleY(220), replayFont, GRAY);
       else
-        DrawText("REPLAY", 350, 220, 25, BLACK);
+        DrawText("REPLAY", ScaleX(350), ScaleY(220), replayFont, BLACK);
     }
     EndDrawing();
 

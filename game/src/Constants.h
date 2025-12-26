@@ -1,8 +1,12 @@
 #pragma once
 
 namespace RenderConstants {
-constexpr int kScreenWidth = 800;
-constexpr int kScreenHeight = 450;
+constexpr int kScreenWidth = 2560;
+constexpr int kScreenHeight = 1440;
+constexpr int kInternalScreenWidth = 1280;
+constexpr int kInternalScreenHeight = 720;
+
+constexpr float kScaleFactor = 0.25;
 
 constexpr int kTargetFPS = 30;
 

@@ -5,6 +5,7 @@
 #include <memory>
 #include <random>
 #include <vector>
+#include "Scale.h"
 
 namespace ParticleConstants {
 constexpr int kMaxParticles = 10;
@@ -59,9 +60,9 @@ void Particle::Draw() const {
   Vector2 B = {size / 2.0f, -height / 3.f};
   Vector2 C = {-size / 2.0f, -height / 3.f};
 
-  A = A + position;
-  B = B + position;
-  C = C + position;
+  A = ScaleVecUniform(A + position);
+  B = ScaleVecUniform(B + position);
+  C = ScaleVecUniform(C + position);
 
   DrawTriangle(A, B, C, color);
 }

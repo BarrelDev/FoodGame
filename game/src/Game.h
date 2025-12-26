@@ -9,43 +9,48 @@
 #include "OptionBox.h"
 #include "OutputBox.h"
 #include "ParticleSystem.h"
+#include "Scale.h"
 #include "raylib.h"
 
 // Store ball shape position
-Vector2 ballPosition{RenderConstants::kScreenWidth / 2.0f,
+extern Vector2 ballPosition{RenderConstants::kScreenWidth / 2.0f,
                      RenderConstants::kScreenHeight / 4.0f};
 
 // Store items and their respective textures dynamically for easy access.
 std::vector<std::shared_ptr<Item>> items;
 
 // Collision for items.
-std::shared_ptr<InputBox> leftInput{
-    std::make_shared<InputBox>((float)RenderConstants::kScreenWidth / 12.0f,
-                               (float)RenderConstants::kScreenHeight / 8.0f)};
+extern std::shared_ptr<InputBox> leftInput{
+        std::make_shared<InputBox>((float)RenderConstants::kInternalScreenWidth / 12.0f,
+                                   (float)RenderConstants::kInternalScreenHeight / 8.0f)};
 
-std::shared_ptr<InputBox> rightInput{
-    std::make_shared<InputBox>((float)RenderConstants::kScreenWidth / 2.5f,
-                               (float)RenderConstants::kScreenHeight / 8.0f)};
+extern std::shared_ptr<InputBox> rightInput{
+        std::make_shared<InputBox>((float)RenderConstants::kInternalScreenWidth / 2.5f,
+                                   (float)RenderConstants::kInternalScreenHeight / 8.0f)};
 
-OutputBox outputBox{(float)RenderConstants::kScreenWidth / 1.4f,
-                    (float)RenderConstants::kScreenHeight / 8.0f, leftInput,
-                    rightInput};
+extern OutputBox outputBox{(float)RenderConstants::kInternalScreenWidth / 1.4f,
+                           (float)RenderConstants::kInternalScreenHeight / 8.0f,
+                           leftInput,
+                        rightInput};
 
-OptionBox optionBox_left{(float)RenderConstants::kScreenWidth / 12.0f,
-                         (float)RenderConstants::kScreenHeight / 1.5f};
+extern OptionBox optionBox_left{
+    (float)RenderConstants::kInternalScreenWidth / 12.0f,
+    (float)RenderConstants::kInternalScreenHeight / 1.5f};
 
-OptionBox optionBox_center{(float)RenderConstants::kScreenWidth / 2.5f,
-                           (float)RenderConstants::kScreenHeight / 1.5f};
+extern OptionBox optionBox_center{
+    (float)RenderConstants::kInternalScreenWidth / 2.5f,
+    (float)RenderConstants::kInternalScreenHeight / 1.5f};
 
-OptionBox optionBox_right{(float)RenderConstants::kScreenWidth / 1.4f,
-                          (float)RenderConstants::kScreenHeight / 1.5f};
+extern OptionBox optionBox_right{
+    (float)RenderConstants::kInternalScreenWidth / 1.4f,
+    (float)RenderConstants::kInternalScreenHeight / 1.5f};
 
 // Temporary Rects for storing item spawn boxes.
 Rectangle optionOne;
 Rectangle optionTwo;
 Rectangle optionThree;
 
-Rectangle replayButton{350, 220, 100, 25};
+extern Rectangle replayButton{ScaleX(350), ScaleY(220), Si(100), Si(25)};
 
 Camera2D camera;
 Camera2D baseCamera;
