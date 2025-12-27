@@ -6,12 +6,10 @@ constexpr int kScreenHeight = 1440;
 constexpr int kInternalScreenWidth = 1280;
 constexpr int kInternalScreenHeight = 720;
 
-constexpr float kScaleFactor = 0.25;
-
 constexpr int kTargetFPS = 30;
 
-constexpr int kTextOffsetY = 50;
-constexpr int kTextOffsetX = -20;
+constexpr int kTextOffsetY = 80;
+constexpr int kTextOffsetX = -32;
 
 constexpr float kMaxShakeAngle = 30.f;  // in degrees
 constexpr float kMaxShakeOffset = 50.f;
@@ -35,6 +33,6 @@ constexpr int testSeconds =
 };  // namespace GameConstants
 
 namespace BoxConstants {
-constexpr int kBoxWidth = 150;
-constexpr int kBoxHeight = 100;
+constexpr int kBoxWidth = 240;
+constexpr int kBoxHeight = 160;
 }  // namespace BoxConstants

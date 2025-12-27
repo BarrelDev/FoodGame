@@ -295,12 +295,13 @@ int main() {
       DrawText("FOOD GAME", ScaleX(190), ScaleY(200), Si(20), BLACK);
 
       // Render loaded items.
-
+      // TODO: Need to rescale raw textures for 720p rendering
+      // TODO: OR create a texture scaling system, all textures are loaded for 800 x 450 p resolution.
       for (auto item : items) {
         Rectangle dest =
             Rectangle{item->GetPosition().x, item->GetPosition().y,
-                      item->GetRect().width, item->GetRect().height};
-        Vector2 centerScale = {ScaleX(item->GetCenter().x), ScaleY(item->GetCenter().y)};
+                      item->GetRect().width * 1.6f, item->GetRect().height * 1.6f};
+        Vector2 centerScale = {ScaleX(item->GetCenter().x * 1.6f), ScaleY(item->GetCenter().y*1.6f)};
         DrawTexturePro(TextureManager::GetTextureFromItemType(item->GetType()),
                        item->GetRect(),
                        ScaleRect(dest),

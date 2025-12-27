@@ -9,8 +9,8 @@
 #include "raylib.h"
 
 namespace OutputBoxConstants {
-constexpr int kWidth = 150;
-constexpr int kHeight = 100;
+constexpr int kWidth = 240;
+constexpr int kHeight = 160;
 }  // namespace OutputBoxConstants
 
 class OutputBox {

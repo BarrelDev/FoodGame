@@ -7,8 +7,8 @@
 #include "raylib.h"
 
 namespace OptionBoxConstants {
-constexpr int kWidth = 150;
-constexpr int kHeight = 100;
+constexpr int kWidth = 240;
+constexpr int kHeight = 160;
 }  // namespace OptionBoxConstants
 
 class OptionBox {
