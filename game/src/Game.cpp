@@ -23,7 +23,7 @@ int main() {
   std::cout << "starting" << std::endl;
   // Start Rendering Window
   InitWindow(RenderConstants::kScreenWidth, RenderConstants::kScreenHeight,
-             "raylib test");
+             "food game");
 
   SetTargetFPS(RenderConstants::kTargetFPS);
 
@@ -78,21 +78,23 @@ int main() {
     if (isLeftClicking) {
       Vector2 itemPos;
       Vector2 itemEdge;
-      for (int i = 0; i < items.size(); ++i) {
-        std::shared_ptr<Item> item = items[i];
+      if (heldItem == nullptr) {
+        for (int i = 0; i < items.size(); ++i) {
+          std::shared_ptr<Item> item = items[i];
 
-        itemPos = Vector2{item->GetPosition().x - item->GetWidth() / 2.0f -
-                              Si(GameConstants::kHitboxForgiveness) * 2.0f,
-                          item->GetPosition().y - item->GetHeight() / 2.0f -
-                              Si(GameConstants::kHitboxForgiveness)};
-        itemEdge = Vector2{item->GetPosition().x + item->GetWidth() / 2.0f +
-                               Si(GameConstants::kHitboxForgiveness) * 2.0f,
-                           item->GetPosition().y + item->GetHeight() / 2.0f +
-                               Si(GameConstants::kHitboxForgiveness)};
-        if (mousePos.x >= itemPos.x && mousePos.x <= itemEdge.x &&
-            mousePos.y >= itemPos.y && mousePos.y <= itemEdge.y) {
-          isHolding = true;
-          heldItem = item;
+          itemPos = Vector2{item->GetPosition().x - item->GetWidth() / 2.0f -
+                                Si(GameConstants::kHitboxForgiveness) * 2.0f,
+                            item->GetPosition().y - item->GetHeight() / 2.0f -
+                                Si(GameConstants::kHitboxForgiveness)};
+          itemEdge = Vector2{item->GetPosition().x + item->GetWidth() / 2.0f +
+                                 Si(GameConstants::kHitboxForgiveness) * 2.0f,
+                             item->GetPosition().y + item->GetHeight() / 2.0f +
+                                 Si(GameConstants::kHitboxForgiveness)};
+          if (mousePos.x >= itemPos.x && mousePos.x <= itemEdge.x &&
+              mousePos.y >= itemPos.y && mousePos.y <= itemEdge.y) {
+            isHolding = true;
+            heldItem = item;
+          }
         }
       }
     } else {
@@ -254,14 +256,14 @@ int main() {
           static_cast<int>(RenderConstants::kScreenHeight / 8.0f), WHITE);*/
 
       // design-space positions (same as before)
-      const float addX = RenderConstants::kInternalScreenWidth / 3.65f;
+      const float addX = RenderConstants::kInternalScreenWidth / 3.6f;
       const float addY = RenderConstants::kInternalScreenHeight / 7.4f;
-      const float eqX = RenderConstants::kInternalScreenWidth / 1.7f;
+      const float eqX = RenderConstants::kInternalScreenWidth / 1.65f;
       const float eqY = RenderConstants::kInternalScreenHeight / 7.4f;
 
       // desired icon size in design coordinates (adjust if you want
       // larger/smaller)
-      const float iconDesignSize = 64.f;
+      const float iconDesignSize = 128.f;
 
       // Source rectangles use the full texture in texture pixels
       Rectangle srcAdd = {0.f, 0.f, (float)addIcon.width,
@@ -292,7 +294,7 @@ int main() {
       DrawTexturePro(equalIcon, srcEqual, destEqualScaled, originEqual, 0.f,
                      WHITE);
 
-      DrawText("FOOD GAME", ScaleX(190), ScaleY(200), Si(20), BLACK);
+      //DrawText("FOOD GAME", ScaleX(190), ScaleY(200), Si(20), BLACK);
 
       // Render loaded items.
       // TODO: Need to rescale raw textures for 720p rendering
@@ -331,16 +333,16 @@ int main() {
                BLACK);
 
       DrawText(TextFormat("%02i:%02i", 0, 0),
-               RenderConstants::kScreenWidth - 110, ScaleY(10), scoreFont,
+               ScaleX(RenderConstants::kInternalScreenWidth - 110), ScaleY(10), scoreFont,
                BLACK);
 
-      int overFont = Si(50);
-      int replayFont = Si(25);
-      DrawText("GAME OVER", ScaleX(250), ScaleY(175), overFont, BLACK);
+      int overFont = Si(75);
+      int replayFont = Si(30);
+      DrawText("GAME OVER", ScaleX(450), ScaleY(230), overFont, BLACK);
       if (CheckCollisionPointRec(mousePos, replayButton))
-        DrawText("REPLAY", ScaleX(350), ScaleY(220), replayFont, GRAY);
+        DrawText("REPLAY", ScaleX(RenderConstants::kReplayX), ScaleY(RenderConstants::kReplayY), replayFont, GRAY);
       else
-        DrawText("REPLAY", ScaleX(350), ScaleY(220), replayFont, BLACK);
+        DrawText("REPLAY", ScaleX(RenderConstants::kReplayX), ScaleY(RenderConstants::kReplayY), replayFont, BLACK);
     }
     EndDrawing();
 

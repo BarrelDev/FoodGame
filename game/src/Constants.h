@@ -14,6 +14,9 @@ constexpr int kTextOffsetX = -32;
 constexpr float kMaxShakeAngle = 30.f;  // in degrees
 constexpr float kMaxShakeOffset = 50.f;
 
+constexpr int kReplayX = 520;
+constexpr int kReplayY = 300;
+
 constexpr int kMinBonusTextSize = 15;
 }  // namespace RenderConstants
 

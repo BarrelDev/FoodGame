@@ -50,7 +50,7 @@ Rectangle optionOne;
 Rectangle optionTwo;
 Rectangle optionThree;
 
-extern Rectangle replayButton{ScaleX(350), ScaleY(220), Si(100), Si(25)};
+extern Rectangle replayButton{RenderConstants::kReplayX, RenderConstants::kReplayY, 145, 30};
 
 Camera2D camera;
 Camera2D baseCamera;
